@@ -22,82 +22,25 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 inject_css()
+
+# ─── TOP NAV BAR (works in embed mode — no sidebar needed) ───────────────────
+_nav_cols = st.columns(7)
+_nav_pages = [
+    ("pages/1_Home.py",       "Home"),
+    ("pages/2_Screener.py",   "Screener"),
+    ("pages/3_Ranker.py",     "Ranker"),
+    ("pages/4_Financials.py", "Financials"),
+    ("pages/5_Shortlist.py",  "Shortlist"),
+    ("pages/6_Diligence.py",  "Diligence"),
+    ("pages/7_Signals.py",    "Signals"),
+]
+for _col, (_pg, _lbl) in zip(_nav_cols, _nav_pages):
+    with _col:
+        st.page_link(_pg, label=_lbl, use_container_width=True)
+st.markdown("<hr style='margin:0 0 8px 0;border-color:rgba(155,111,41,.3)'>", unsafe_allow_html=True)
+# ─────────────────────────────────────────────────────────────────────────────
+
 nav_bar("Home")
-
-with st.sidebar:
-    sec_label("Navigate")
-
-
-
-
-
-
-# ─── HEADER ──────────────────────────────────────────────────────────────────
-page_header(
-    title="Deal Sourcing & Preliminary <em>Diligence Engine</em>",
-    subtitle="European M&A · Phase 1 — Euronext Paris / SBF 120",
-    badge="Phase 1 · Live",
-)
-
-# ─── LOAD & SCORE ─────────────────────────────────────────────────────────────
-with st.spinner("Loading universe…"):
-    try:
-        raw = fetch_universe()
-    except Exception:
-        raw = get_static_df()
-
-df = score_universe(raw)
-
-# ─── SUMMARY METRICS ──────────────────────────────────────────────────────────
-stats = summary_stats(df)
-top1 = df.iloc[0] if len(df) > 0 else None
-
-metric_row([
-    {"val": str(stats.get("count", "—")),              "lbl": "Companies in Universe"},
-    {"val": f"{stats.get('avg_score', 0):.0f} / 100",  "lbl": "Avg Acquisition Score", "cls": "gold"},
-    {"val": f"€{stats.get('median_mktcap', 0):.1f}bn", "lbl": "Median Market Cap"},
-    {"val": f"{stats.get('median_ev_ebitda', 0):.1f}×","lbl": "Median EV/EBITDA"},
-    {"val": f"{stats.get('median_margin', 0):.1f}%",   "lbl": "Median EBITDA Margin"},
-])
-
-# ─── TOP TARGET CALLOUT ───────────────────────────────────────────────────────
-if top1 is not None:
-    st.markdown("---")
-    sec_label("Top Acquisition Target")
-    c1, c2, c3 = st.columns([2, 2, 3])
-    with c1:
-        st.markdown(f"""
-        <div style="background:var(--paper2);padding:20px 22px;border:1px solid rgba(16,14,12,.08)">
-            <div style="font-family:var(--mono);font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">#{1} Ranked Target</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--ink);margin-bottom:2px">{top1['Company']}</div>
-            <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em">{top1['Ticker']} · {top1['Sector']}</div>
-        </div>
-        """, unsafe_allow_html=True)
-    with c2:
-        score_bar("Composite Score",       top1.get("Score", 0))
-        score_bar("Profitability",         top1.get("score_profitability", 0))
-        score_bar("Valuation",             top1.get("score_valuation", 0))
-        score_bar("Leverage",              top1.get("score_leverage", 0))
-    with c3:
-        pills_html = (
-            pill(f"EV/EBITDA {top1.get('EV/EBITDA','—')}×", "gold") +
-            pill(f"Margin {top1.get('EBITDA Margin %','—')}%", "green") +
-            pill(f"ND/EBITDA {top1.get('ND/EBITDA','—')}×", "muted") +
-            pill(top1["Sector"], "muted")
-        )
-        st.markdown(f"""
-        <div style="background:var(--paper2);padding:20px 22px;border:1px solid rgba(16,14,12,.08);height:100%">
-            <div style="font-family:var(--mono);font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);margin-bottom:12px">Key Metrics</div>
-            {pills_html}
-            <div style="margin-top:14px;font-family:var(--sans);font-size:13px;color:var(--muted);line-height:1.7">
-                Mkt Cap <b style="color:var(--ink)">€{top1.get("Mkt Cap (€bn)","—")}bn</b> · 
-                EV <b style="color:var(--ink)">€{top1.get("EV (€bn)","—")}bn</b> · 
-                Revenue <b style="color:var(--ink)">€{top1.get("Revenue (€mn)",0)/1000:.1f}bn</b>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-st.markdown("---")
 
 # ─── SCORE LEAGUE TABLE CHART ─────────────────────────────────────────────────
 sec_label("Top 10 Targets by Composite Score")
