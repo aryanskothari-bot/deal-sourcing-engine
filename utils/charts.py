@@ -102,19 +102,31 @@ def financials_bar(years: list, revenue: list, ebitda: list, company: str) -> go
 
 
 def margin_line(years: list, ebitda_margin: list, ebit_margin: list, company: str) -> go.Figure:
+    # Filter out None values — pair years with valid margin values
+    def clean(yrs, vals):
+        paired = [(y, v) for y, v in zip(yrs, vals) if v is not None]
+        if not paired:
+            return [], []
+        return [p[0] for p in paired], [p[1] for p in paired]
+
+    em_years, em_vals = clean(years, ebitda_margin)
+    im_years, im_vals = clean(years, ebit_margin)
+
     fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=years, y=ebitda_margin, mode="lines+markers",
-        name="EBITDA Margin",
-        line=dict(color=COLORS["gold3"], width=2.5),
-        marker=dict(size=7, symbol="circle"),
-    ))
-    fig.add_trace(go.Scatter(
-        x=years, y=ebit_margin, mode="lines+markers",
-        name="EBIT Margin",
-        line=dict(color=COLORS["muted"], width=2, dash="dash"),
-        marker=dict(size=5, symbol="circle"),
-    ))
+    if em_vals:
+        fig.add_trace(go.Scatter(
+            x=em_years, y=em_vals, mode="lines+markers",
+            name="EBITDA Margin",
+            line=dict(color=COLORS["gold3"], width=2.5),
+            marker=dict(size=7, symbol="circle"),
+        ))
+    if im_vals:
+        fig.add_trace(go.Scatter(
+            x=im_years, y=im_vals, mode="lines+markers",
+            name="EBIT Margin",
+            line=dict(color=COLORS["muted"], width=2, dash="dash"),
+            marker=dict(size=5, symbol="circle"),
+        ))
     fig.update_layout(
         **_LAYOUT,
         title=dict(text=f"{company} — Margin Trend (%)",
