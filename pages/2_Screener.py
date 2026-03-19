@@ -18,6 +18,19 @@ from config import SECTORS, SCREENER_DEFAULTS
 
 st.set_page_config(page_title="Screener", page_icon="🔍", layout="wide")
 inject_css()
+
+# ─── SIDEBAR NAVIGATION ───────────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("### Navigation")
+    st.page_link("pages/1_Home.py",       label="🏠 Home")
+    st.page_link("pages/2_Screener.py",   label="🔍 Universe Screener")
+    st.page_link("pages/3_Ranker.py",     label="🎯 Target Ranker")
+    st.page_link("pages/4_Financials.py", label="📊 Financial Statements")
+    st.page_link("pages/5_Shortlist.py",  label="📋 Shortlist & Export")
+    st.page_link("pages/6_Diligence.py",  label="🔎 Diligence View")
+    st.page_link("pages/7_Signals.py",    label="📡 Deal Signals")
+    st.markdown("---")
+
 page_header("Universe <em>Screener</em>", "Filter the SBF 120 by sector, size, multiples &amp; margins")
 
 # ─── LOAD ────────────────────────────────────────────────────────────────────
