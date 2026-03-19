@@ -1,4 +1,6 @@
 """
+# v2.1 — shortlist fix
+
 pages/5_Shortlist.py — Deal Shortlist with Excel Export.
 """
 import streamlit as st
