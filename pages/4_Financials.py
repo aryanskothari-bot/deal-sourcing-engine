@@ -16,6 +16,19 @@ from utils.charts import financials_bar, margin_line
 
 st.set_page_config(page_title="Financials", page_icon="📊", layout="wide")
 inject_css()
+
+# ─── SIDEBAR NAVIGATION ───────────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("### Navigation")
+    st.page_link("pages/1_Home.py",       label="🏠 Home")
+    st.page_link("pages/2_Screener.py",   label="🔍 Universe Screener")
+    st.page_link("pages/3_Ranker.py",     label="🎯 Target Ranker")
+    st.page_link("pages/4_Financials.py", label="📊 Financial Statements")
+    st.page_link("pages/5_Shortlist.py",  label="📋 Shortlist & Export")
+    st.page_link("pages/6_Diligence.py",  label="🔎 Diligence View")
+    st.page_link("pages/7_Signals.py",    label="📡 Deal Signals")
+    st.markdown("---")
+
 page_header("Financial Statement <em>Standardisation</em>", "5-year IS history · Common-size · Key ratios · Trend charts")
 
 # ─── LOAD UNIVERSE ────────────────────────────────────────────────────────────
