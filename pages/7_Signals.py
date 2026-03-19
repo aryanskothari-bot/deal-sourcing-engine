@@ -201,20 +201,18 @@ for s in SIGNALS:
 
 heatmap_rows = ""
 for sector, counts in sorted(sector_signals.items(), key=lambda x: -x[1]["total"]):
-    bar_width = counts["total"] / max(s["total"] for s in sector_signals.values()) * 100
-    heatmap_rows += f"""
-    <div style="display:grid;grid-template-columns:200px 1fr 80px;align-items:center;
-                padding:10px 0;border-bottom:1px solid rgba(16,14,12,.06)">
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--muted)">{sector}</div>
-        <div style="display:flex;gap:3px;align-items:center">
-            {''.join(['<div style="width:14px;height:14px;background:var(--red);opacity:.8"></div>' for _ in range(counts['high'])])}
-            {''.join(['<div style="width:14px;height:14px;background:var(--gold);opacity:.8"></div>' for _ in range(counts['medium'])])}
-            {''.join(['<div style="width:14px;height:14px;background:var(--green);opacity:.7"></div>' for _ in range(counts['low'])])}
-        </div>
-        <div style="font-family:var(--serif);font-size:16px;font-weight:500;
-                    color:var(--ink);text-align:right">{counts['total']}</div>
-    </div>
-    """
+    high_boxes   = '<div style="width:14px;height:14px;background:var(--red);opacity:.8;display:inline-block;margin-right:3px"></div>' * counts["high"]
+    medium_boxes = '<div style="width:14px;height:14px;background:var(--gold);opacity:.8;display:inline-block;margin-right:3px"></div>' * counts["medium"]
+    low_boxes    = '<div style="width:14px;height:14px;background:var(--green);opacity:.7;display:inline-block;margin-right:3px"></div>' * counts["low"]
+    total        = counts["total"]
+    heatmap_rows += (
+        "<div style='display:grid;grid-template-columns:200px 1fr 80px;align-items:center;"
+        "padding:10px 0;border-bottom:1px solid rgba(16,14,12,.06)'>"
+        f"<div style='font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--muted)'>{sector}</div>"
+        f"<div style='display:flex;gap:3px;align-items:center'>{high_boxes}{medium_boxes}{low_boxes}</div>"
+        f"<div style='font-family:var(--serif);font-size:16px;font-weight:500;color:var(--ink);text-align:right'>{total}</div>"
+        "</div>"
+    )
 
 st.markdown(f"""
 <div style="background:var(--paper2);padding:20px 24px;border:1px solid rgba(16,14,12,.08)">
