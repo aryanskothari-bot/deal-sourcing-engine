@@ -8,7 +8,7 @@ import pandas as pd
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from ui.styles import inject_css, page_header, sec_label, metric_row, score_bar, nav_bar
+from ui.styles import inject_css, page_header, sec_label, metric_row, score_bar
 from data_sources.yfinance_loader import fetch_universe
 from data_sources.static_loader import get_static_df
 from modules.ranker import score_universe, get_pillar_scores, SCORING_PILLARS
@@ -16,23 +16,18 @@ from utils.charts import radar_chart, score_bars
 
 st.set_page_config(page_title="Target Ranker", page_icon="🎯", layout="wide")
 inject_css()
+# ─── NAV BAR ──────────────────────────────────────────────────────────────────
+c1,c2,c3,c4,c5,c6,c7 = st.columns(7)
+with c1: st.page_link("pages/1_Home.py",       label="🏠 Home",        use_container_width=True)
+with c2: st.page_link("pages/2_Screener.py",   label="🔍 Screener",    use_container_width=True)
+with c3: st.page_link("pages/3_Ranker.py",     label="🎯 Ranker",      use_container_width=True)
+with c4: st.page_link("pages/4_Financials.py", label="📊 Financials",  use_container_width=True)
+with c5: st.page_link("pages/5_Shortlist.py",  label="📋 Shortlist",   use_container_width=True)
+with c6: st.page_link("pages/6_Diligence.py",  label="🔎 Diligence",   use_container_width=True)
+with c7: st.page_link("pages/7_Signals.py",    label="📡 Signals",     use_container_width=True)
+st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>", unsafe_allow_html=True)
+# ──────────────────────────────────────────────────────────────────────────────
 
-# ─── TOP NAV BAR (works in embed mode — no sidebar needed) ───────────────────
-_nav_cols = st.columns(7)
-_nav_pages = [
-    ("pages/1_Home.py",       "Home"),
-    ("pages/2_Screener.py",   "Screener"),
-    ("pages/3_Ranker.py",     "Ranker"),
-    ("pages/4_Financials.py", "Financials"),
-    ("pages/5_Shortlist.py",  "Shortlist"),
-    ("pages/6_Diligence.py",  "Diligence"),
-    ("pages/7_Signals.py",    "Signals"),
-]
-for _col, (_pg, _lbl) in zip(_nav_cols, _nav_pages):
-    with _col:
-        st.page_link(_pg, label=_lbl, use_container_width=True)
-st.markdown("<hr style='margin:0 0 8px 0;border-color:rgba(155,111,41,.3)'>", unsafe_allow_html=True)
-# ─────────────────────────────────────────────────────────────────────────────
 
 nav_bar("Ranker")
 
