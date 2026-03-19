@@ -55,12 +55,12 @@ with st.sidebar:
     sector = st.selectbox("Sector", SECTORS, index=0)
 
     st.markdown("**Market Cap (€bn)**")
-    mktcap_range = st.slider("", 0.0, 100.0,
+    mktcap_range = st.slider("Market Cap Range", 0.0, 100.0,
         (SCREENER_DEFAULTS["mktcap_min_bn"], SCREENER_DEFAULTS["mktcap_max_bn"]),
         step=0.5, key="mktcap", label_visibility="collapsed")
 
     st.markdown("**EV (€bn)**")
-    ev_range = st.slider("", 0.0, 150.0,
+    ev_range = st.slider("EV Range", 0.0, 150.0,
         (SCREENER_DEFAULTS["ev_min_bn"], SCREENER_DEFAULTS["ev_max_bn"]),
         step=0.5, key="ev", label_visibility="collapsed")
 
@@ -148,8 +148,8 @@ else:
             "NTM P/E":        "{:.1f}×",
             "Score":          "{:.0f}",
         }, na_rep="N/A")
-        .applymap(style_score,  subset=["Score"])
-        .applymap(style_growth, subset=["Rev Growth %"])
+        .map(style_score,  subset=["Score"])
+        .map(style_growth, subset=["Rev Growth %"])
         .set_table_styles([
             {"selector": "thead th", "props": [
                 ("background-color", "#100E0C"), ("color", "#F6F1E7"),
