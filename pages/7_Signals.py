@@ -10,12 +10,13 @@ from datetime import datetime, timedelta
 import random
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from ui.styles import inject_css, page_header, sec_label, metric_row, pill
+from ui.styles import inject_css, page_header, sec_label, metric_row, pill, nav_bar
 from data_sources.static_loader import get_static_df
 from config import COLORS
 
 st.set_page_config(page_title="Deal Signal Monitor", page_icon="📡", layout="wide")
 inject_css()
+nav_bar("Signals")
 
 # ─── SIDEBAR NAVIGATION ───────────────────────────────────────────────────────
 with st.sidebar:
