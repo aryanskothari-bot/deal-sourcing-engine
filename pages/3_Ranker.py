@@ -119,6 +119,10 @@ styler = (
     .style
     .format({c: "{:.0f}" for c in show if c.startswith("score_")}, na_rep="N/A")
     .format({"Score": "{:.0f}"})
-    .background_gradient(subset=["Score"], cmap="YlOrBr")
+    
 )
+try:
+    styler = styler.background_gradient(subset=["Score"], cmap="YlOrBr")
+except Exception:
+    pass
 st.dataframe(styler, use_container_width=True, height=460)
