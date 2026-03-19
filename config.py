@@ -83,14 +83,14 @@ TICKER_SECTOR_MAP = {
 
 # ─── 8-PILLAR SCORING WEIGHTS ───────────────────────────────────────────────
 SCORING_PILLARS = {
-    "score_growth":        {"weight": 0.15, "label": "Revenue Growth"},
-    "score_profitability": {"weight": 0.15, "label": "Profitability"},
-    "score_balance_sheet": {"weight": 0.12, "label": "Balance Sheet"},
-    "score_leverage":      {"weight": 0.12, "label": "Leverage"},
-    "score_valuation":     {"weight": 0.15, "label": "Valuation"},
-    "score_size":          {"weight": 0.10, "label": "Size Fit"},
-    "score_geography":     {"weight": 0.08, "label": "Geography"},
-    "score_acq_fit":       {"weight": 0.13, "label": "Acquisition Fit"},
+    "Revenue Growth":        {"weight": 0.15, "col": "score_growth"},
+    "Profitability":         {"weight": 0.15, "col": "score_profitability"},
+    "Balance Sheet Quality": {"weight": 0.12, "col": "score_balance_sheet"},
+    "Leverage":              {"weight": 0.12, "col": "score_leverage"},
+    "Valuation Attractiveness": {"weight": 0.15, "col": "score_valuation"},
+    "Size Compatibility":    {"weight": 0.10, "col": "score_size"},
+    "Geographic Relevance":  {"weight": 0.08, "col": "score_geography"},
+    "Acquisition Fit":       {"weight": 0.13, "col": "score_acq_fit"},
 }
 
 COLORS = {
