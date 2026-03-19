@@ -8,7 +8,7 @@ import pandas as pd
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from ui.styles import inject_css, page_header, sec_label, metric_row, flag_card, score_bar, status_wip, pill
+from ui.styles import inject_css, page_header, sec_label, metric_row, flag_card, score_bar, status_wip, pill, nav_bar
 from data_sources.yfinance_loader import fetch_universe
 from data_sources.static_loader import get_static_df
 from modules.ranker import score_universe
@@ -18,6 +18,7 @@ from config import COLORS
 
 st.set_page_config(page_title="Diligence View", page_icon="🔍", layout="wide")
 inject_css()
+nav_bar("Diligence")
 
 # ─── SIDEBAR NAVIGATION ───────────────────────────────────────────────────────
 with st.sidebar:
