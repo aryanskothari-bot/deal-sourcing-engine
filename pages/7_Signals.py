@@ -63,6 +63,18 @@ SIGNALS = [
      "headline":"bioMerieux cited as potential target as US diagnostics majors survey European consolidation",
      "detail":"Jefferies flags bioMerieux as attractive M&A target given 24% EBITDA margins. Family ownership (56%) complicates hostile approach.",
      "source":"Jefferies Research","tags":["M&A Target","Healthcare","Diagnostics"]},
+    {"date":"Mar 06, 2026","company":"Legrand","ticker":"LR.PA","type":"Acquisition","severity":"low",
+     "headline":"Legrand acquires US smart building software provider for USD 320mn",
+     "detail":"Strategic bolt-on in digital building infrastructure. Reinforces Legrand software recurring revenue strategy. Deal adds ~USD 45mn ARR at 7x revenue multiple. EV/EBITDA remains comfortable at 2.3x post-deal.",
+     "source":"Legrand IR","tags":["Acquisition","Industrials","Software"]},
+    {"date":"Mar 05, 2026","company":"Pernod Ricard","ticker":"RI.PA","type":"Strategic Review","severity":"medium",
+     "headline":"Pernod Ricard activates portfolio review amid continued US market softness",
+     "detail":"Board exploring disposal of non-core regional spirits brands. US volumes -7% in H1 FY2026. Activist pressure from Elliott Management (5.2% stake) accelerating strategic action timeline.",
+     "source":"Reuters","tags":["Portfolio Review","Spirits","Activist"]},
+    {"date":"Mar 03, 2026","company":"Saint-Gobain","ticker":"SGO.PA","type":"Acquisition","severity":"low",
+     "headline":"Saint-Gobain completes acquisition of European insulation specialist for 450mn",
+     "detail":"Acquisition strengthens Saint-Gobain high-performance solutions segment. Target generates 180mn revenue with 22% EBITDA margin. Deal EV/EBITDA of 8.5x in line with sector comps.",
+     "source":"Saint-Gobain Press Release","tags":["Acquisition","Industrials","Building Materials"]},
 ]
 
 with st.sidebar:
@@ -97,11 +109,18 @@ st.markdown("---")
 sec_label("Signal Heatmap by Sector")
 
 sector_map = {
-    "KER.PA":"Luxury & Consumer","ATO.PA":"Technology & Media",
-    "VIV.PA":"Technology & Media","RCO.PA":"Luxury & Consumer",
-    "IPN.PA":"Healthcare & Pharma","EN.PA":"Industrials & Engineering",
-    "CA.PA":"Retail & Distribution","CAP.PA":"Technology & Media",
-    "BIM.PA":"Healthcare & Pharma",
+    "KER.PA": "Luxury & Consumer",
+    "ATO.PA": "Technology & Media",
+    "VIV.PA": "Technology & Media",
+    "RCO.PA": "Luxury & Consumer",
+    "IPN.PA": "Healthcare & Pharma",
+    "EN.PA":  "Industrials & Engineering",
+    "CA.PA":  "Retail & Distribution",
+    "CAP.PA": "Technology & Media",
+    "BIM.PA": "Healthcare & Pharma",
+    "LR.PA":  "Industrials & Engineering",
+    "RI.PA":  "Luxury & Consumer",
+    "SGO.PA": "Industrials & Engineering",
 }
 sector_data = {}
 for s in SIGNALS:
