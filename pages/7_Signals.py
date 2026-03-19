@@ -18,18 +18,6 @@ st.set_page_config(page_title="Deal Signal Monitor", page_icon="📡", layout="w
 inject_css()
 nav_bar("Signals")
 
-# ─── SIDEBAR NAVIGATION ───────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("### Navigation")
-    st.page_link("pages/1_Home.py",       label="🏠 Home")
-    st.page_link("pages/2_Screener.py",   label="🔍 Universe Screener")
-    st.page_link("pages/3_Ranker.py",     label="🎯 Target Ranker")
-    st.page_link("pages/4_Financials.py", label="📊 Financial Statements")
-    st.page_link("pages/5_Shortlist.py",  label="📋 Shortlist & Export")
-    st.page_link("pages/6_Diligence.py",  label="🔎 Diligence View")
-    st.page_link("pages/7_Signals.py",    label="📡 Deal Signals")
-    st.markdown("---")
-
 page_header(
     "Deal <em>Signal Monitor</em>",
     "Live M&A watch · Takeover filings · Stake disclosures · Strategic reviews · Restructuring events"
