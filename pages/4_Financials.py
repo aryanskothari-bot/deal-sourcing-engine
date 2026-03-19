@@ -8,7 +8,7 @@ import pandas as pd
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from ui.styles import inject_css, page_header, sec_label, metric_row
+from ui.styles import inject_css, page_header, sec_label, metric_row, nav_bar
 from data_sources.yfinance_loader import fetch_universe, fetch_financials
 from data_sources.static_loader import get_static_df
 from modules.ranker import score_universe
@@ -16,6 +16,7 @@ from utils.charts import financials_bar, margin_line
 
 st.set_page_config(page_title="Financials", page_icon="📊", layout="wide")
 inject_css()
+nav_bar("Financials")
 
 # ─── SIDEBAR NAVIGATION ───────────────────────────────────────────────────────
 with st.sidebar:
