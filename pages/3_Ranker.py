@@ -122,7 +122,10 @@ styler = (
     
 )
 try:
-    styler = styler.background_gradient(subset=["Score"], cmap="YlOrBr")
+    try:
+        styler = styler.background_gradient(subset=["Score"], cmap="YlOrBr")
+    except Exception:
+        pass  # matplotlib not installed
 except Exception:
     pass
 st.dataframe(styler, use_container_width=True, height=460)
