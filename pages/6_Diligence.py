@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from ui.styles import inject_css, page_header, sec_label, metric_row, flag_card, score_bar, status_wip, pill
 from data_sources.yfinance_loader import fetch_universe
-from data_sources.static_loader import get_static_df
+from data_sources.static_loader import get_static_df, get_static_financials
 from modules.ranker import score_universe
 from utils.charts import waterfall_chart
 import plotly.graph_objects as go
@@ -57,8 +57,10 @@ sec_label("01 · Quality of Earnings (QoE)")
 
 col1, col2, col3 = st.columns(3)
 
-# Reported EBITDA
-rep_ebitda = row.get("EBITDA (€mn)", 0) or 0
+# Reported EBITDA — use static financials as reliable source
+_fin = get_static_financials(ticker)
+_static_ebitda = _fin["ebitda"][-1] if _fin and _fin.get("ebitda") else 0
+rep_ebitda = float(row.get("EBITDA (€mn)") or 0) or _static_ebitda or 1000
 
 # Simulated QoE adjustments (illustrative)
 mgmt_fees      =  round(rep_ebitda * 0.018, 1)   # +  management fees add-back
