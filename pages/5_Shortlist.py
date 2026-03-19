@@ -1,8 +1,6 @@
 """
 pages/5_Shortlist.py — Deal Shortlist with Excel Export.
-Top-ranked targets with full score breakdown and exportable workbook.
 """
-
 import streamlit as st
 import pandas as pd
 import io
@@ -18,7 +16,7 @@ from config import EXPORT_FILENAME
 
 st.set_page_config(page_title="Shortlist", page_icon="📋", layout="wide")
 inject_css()
-# ─── NAV BAR ──────────────────────────────────────────────────────────────────
+
 _c1,_c2,_c3,_c4,_c5,_c6,_c7 = st.columns(7)
 with _c1: st.page_link("pages/1_Home.py",       label="🏠 Home",        use_container_width=True)
 with _c2: st.page_link("pages/2_Screener.py",   label="🔍 Screener",    use_container_width=True)
@@ -28,24 +26,8 @@ with _c5: st.page_link("pages/5_Shortlist.py",  label="📋 Shortlist",   use_co
 with _c6: st.page_link("pages/6_Diligence.py",  label="🔎 Diligence",   use_container_width=True)
 with _c7: st.page_link("pages/7_Signals.py",    label="📡 Signals",     use_container_width=True)
 st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>", unsafe_allow_html=True)
-# ──────────────────────────────────────────────────────────────────────────────
-
-
-("Shortlist")
 
 page_header("Deal <em>Shortlist</em>", "Ranked targets · Score breakdown · Inclusion rationale · Excel export")
-
-
-def _build_rationale(row, pillars):
-    strengths = sorted(pillars.items(), key=lambda x: x[1], reverse=True)[:2]
-    str_text  = " and ".join([f"<b>{p}</b> ({s:.0f}/100)" for p, s in strengths])
-    return (
-        f"{row['Company']} achieves a composite score of "
-        f"<b>{row['Score']:.0f}/100</b>. Strongest pillars: {str_text}. "
-        f"EV/EBITDA of {row.get('EV/EBITDA','N/A')}x compares favourably to sector peers. "
-        f"Net leverage of {row.get('ND/EBITDA','N/A')}x is within conventional acquisition parameters."
-    )
-
 
 # ── LOAD & SCORE ──────────────────────────────────────────────────────────────
 with st.spinner("Loading shortlist..."):
@@ -56,8 +38,45 @@ with st.spinner("Loading shortlist..."):
 df = score_universe(raw)
 
 # ── CONTROLS ──────────────────────────────────────────────────────────────────
+col_top, col_min = st.columns([1, 1])
+with col_top:
+    n_targets = st.slider("Number of targets in shortlist", 3, min(12, len(df)), 5)
+with col_min:
+    min_score = st.slider("Minimum composite score", 0, 90, 50, step=5)
+
+shortlist = df[df["Score"] >= min_score].head(n_targets).reset_index(drop=True)
+
+if shortlist.empty:
+    st.warning("No companies match the current filters. Lower the minimum score.")
+    st.stop()
+
+# ── SUMMARY METRICS ────────────────────────────────────────────────────────────
+metric_row([
+    {"val": str(len(shortlist)),                              "lbl": "Shortlisted Targets"},
+    {"val": f"{shortlist['Score'].mean():.0f} / 100",       "lbl": "Avg Score",   "cls": "gold"},
+    {"val": f"€{shortlist['Mkt Cap (€bn)'].median():.1f}bn","lbl": "Median Mkt Cap"},
+    {"val": f"{shortlist['EV/EBITDA'].median():.1f}×",      "lbl": "Median EV/EBITDA"},
+    {"val": f"{shortlist['EBITDA Margin %'].median():.1f}%", "lbl": "Median EBITDA Margin"},
+])
+
+st.markdown("---")
+sec_label("Score League Table")
+st.plotly_chart(score_bars(shortlist, top_n=len(shortlist)), use_container_width=True)
+
+st.markdown("---")
+
 # ── TARGET CARDS ──────────────────────────────────────────────────────────────
-sec_label(f"Top {len(shortlist)} Acquisition Targets")
+sec_label(f"Top {len(shortlist)} Acquisition Targets — Detailed View")
+
+def _build_rationale(row, pillars):
+    strengths = sorted(pillars.items(), key=lambda x: x[1], reverse=True)[:2]
+    str_text  = " and ".join([f"<b>{p}</b> ({s:.0f}/100)" for p, s in strengths])
+    return (
+        f"{row['Company']} achieves a composite score of "
+        f"<b>{row['Score']:.0f}/100</b>. Strongest pillars: {str_text}. "
+        f"EV/EBITDA of {row.get('EV/EBITDA', 'N/A')}× compares favourably to sector peers. "
+        f"Net leverage of {row.get('ND/EBITDA', 'N/A')}× is within conventional acquisition parameters."
+    )
 
 for rank, (_, row) in enumerate(shortlist.iterrows(), start=1):
     pillars = get_pillar_scores(row)
@@ -69,16 +88,16 @@ for rank, (_, row) in enumerate(shortlist.iterrows(), start=1):
 
         with c1:
             pills_html = (
-                pill(f"EV/EBITDA {row.get('EV/EBITDA','—')}x",    "gold")  +
-                pill(f"Margin {row.get('EBITDA Margin %','—')}%",  "green") +
-                pill(f"ND/EBITDA {row.get('ND/EBITDA','—')}x",    "muted") +
-                pill(f"€{row.get('Mkt Cap (€bn)','—')}bn mktcap", "muted")
+                pill(f"EV/EBITDA {row.get('EV/EBITDA', '—')}×",      "gold")  +
+                pill(f"Margin {row.get('EBITDA Margin %', '—')}%",    "green") +
+                pill(f"ND/EBITDA {row.get('ND/EBITDA', '—')}×",      "muted") +
+                pill(f"€{row.get('Mkt Cap (€bn)', '—')}bn mktcap",   "muted")
             )
             st.markdown(f"""
             <div style="background:var(--paper2);padding:16px 18px;border:1px solid rgba(16,14,12,.08);margin-bottom:10px">
                 <div style="font-family:var(--mono);font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:4px">#{rank} Ranked · {row['Ticker']}</div>
-                <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:2px">{row['Company']}</div>
-                <div style="font-family:var(--mono);font-size:8.5px;color:var(--muted)">{row['Sector']} · {row.get('Country','France')}</div>
+                <div style="font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);margin-bottom:2px">{row['Company']}</div>
+                <div style="font-family:var(--mono);font-size:8.5px;color:var(--muted)">{row['Sector']} · {row.get('Country', 'France')}</div>
             </div>
             {pills_html}
             """, unsafe_allow_html=True)
@@ -115,12 +134,12 @@ export_df   = shortlist[export_cols].copy()
 
 buf = io.BytesIO()
 with pd.ExcelWriter(buf, engine="openpyxl") as writer:
-    export_df.to_excel(writer, sheet_name="Shortlist",      index=False)
-    df.to_excel(writer,        sheet_name="Full Universe",  index=False)
+    export_df.to_excel(writer, sheet_name="Shortlist",     index=False)
+    df.to_excel(writer,        sheet_name="Full Universe", index=False)
 buf.seek(0)
 
 st.download_button(
-    label="Download Shortlist (Excel)",
+    label="⬇ Download Shortlist (Excel)",
     data=buf,
     file_name=EXPORT_FILENAME,
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
