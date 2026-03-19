@@ -345,6 +345,30 @@ def inject_css():
         border-color: rgba(213,169,68,.35);
         background: rgba(213,169,68,.06);
     }
+
+    /* ─── PAGE LINK NAV BAR ─── */
+    [data-testid="stPageLink"] a {
+        font-family: var(--mono) !important;
+        font-size: 9px !important;
+        letter-spacing: .2em !important;
+        text-transform: uppercase !important;
+        color: var(--ink2) !important;
+        text-decoration: none !important;
+        padding: 8px 4px !important;
+        display: block !important;
+        text-align: center !important;
+        border-bottom: 2px solid transparent !important;
+        transition: all .2s !important;
+    }
+    [data-testid="stPageLink"] a:hover {
+        color: var(--gold) !important;
+        border-bottom-color: var(--gold) !important;
+    }
+    [data-testid="stPageLink-active"] a {
+        color: var(--gold) !important;
+        border-bottom-color: var(--gold3) !important;
+        font-weight: 600 !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
