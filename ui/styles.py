@@ -39,7 +39,7 @@ def inject_css():
     }
 
     /* ── HIDE STREAMLIT DEFAULT CHROME ── */
-    #MainMenu { visibility: hidden; } footer { visibility: hidden; } [data-testid="stAppDeployButton"] { display: none !important; } [data-testid="stMainMenu"] { visibility: visible !important; } [data-testid="stMainMenuButton"] { visibility: visible !important; }     .block-container { padding-top: 1.8rem !important; padding-bottom: 2rem !important; max-width: 1320px !important; } [data-testid="stSidebarCollapsedControl"] { visibility: visible !important; display: flex !important; opacity: 1 !important; } [data-testid="collapsedControl"] { visibility: visible !important; display: flex !important; }
+    #MainMenu { visibility: hidden; } footer { visibility: hidden; } [data-testid="stAppDeployButton"] { display: none !important; } [data-testid="stMainMenu"] { visibility: visible !important; } [data-testid="stMainMenuButton"] { visibility: visible !important; }     .block-container { padding-top: 3.5rem !important; padding-bottom: 2rem !important; max-width: 1320px !important; } [data-testid="stSidebarCollapsedControl"] { visibility: visible !important; display: flex !important; opacity: 1 !important; } [data-testid="collapsedControl"] { visibility: visible !important; display: flex !important; }
 
     /* ── SIDEBAR ── */
     [data-testid="stSidebar"] {
