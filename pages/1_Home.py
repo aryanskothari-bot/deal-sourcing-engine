@@ -8,7 +8,7 @@ import pandas as pd
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from ui.styles import inject_css, page_header, sec_label, metric_row, score_bar, pill
+from ui.styles import inject_css, page_header, sec_label, metric_row, score_bar, pill, nav_bar
 from data_sources.yfinance_loader import fetch_universe
 from data_sources.static_loader import get_static_df
 from modules.screener import summary_stats
@@ -22,6 +22,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 inject_css()
+nav_bar("Home")
 
 with st.sidebar:
     sec_label("Navigate")
