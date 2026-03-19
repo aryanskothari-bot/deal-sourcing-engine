@@ -83,14 +83,14 @@ TICKER_SECTOR_MAP = {
 
 # ─── 8-PILLAR SCORING WEIGHTS ───────────────────────────────────────────────
 SCORING_PILLARS = {
-    "Revenue Growth":        {"weight": 0.15, "col": "score_growth"},
-    "Profitability":         {"weight": 0.15, "col": "score_profitability"},
-    "Balance Sheet Quality": {"weight": 0.12, "col": "score_balance_sheet"},
-    "Leverage":              {"weight": 0.12, "col": "score_leverage"},
-    "Valuation Attractiveness": {"weight": 0.15, "col": "score_valuation"},
-    "Size Compatibility":    {"weight": 0.10, "col": "score_size"},
-    "Geographic Relevance":  {"weight": 0.08, "col": "score_geography"},
-    "Acquisition Fit":       {"weight": 0.13, "col": "score_acq_fit"},
+    "Revenue Growth":           0.15,
+    "Profitability":            0.15,
+    "Balance Sheet Quality":    0.12,
+    "Leverage":                 0.12,
+    "Valuation Attractiveness": 0.15,
+    "Size Compatibility":       0.10,
+    "Geographic Relevance":     0.08,
+    "Acquisition Fit":          0.13,
 }
 
 COLORS = {
