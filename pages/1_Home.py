@@ -23,6 +23,17 @@ st.set_page_config(
 )
 inject_css()
 
+with st.sidebar:
+    sec_label("Navigate")
+    st.page_link("pages/1_Home.py",       label="🏠 Home")
+    st.page_link("pages/2_Screener.py",   label="🔍 Universe Screener")
+    st.page_link("pages/3_Ranker.py",     label="🎯 Target Ranker")
+    st.page_link("pages/4_Financials.py", label="📊 Financial Statements")
+    st.page_link("pages/5_Shortlist.py",  label="📋 Shortlist & Export")
+    st.page_link("pages/6_Diligence.py",  label="🔎 Diligence View")
+    st.page_link("pages/7_Signals.py",    label="📡 Deal Signals")
+
+
 # ─── HEADER ──────────────────────────────────────────────────────────────────
 page_header(
     title="Deal Sourcing & Preliminary <em>Diligence Engine</em>",
