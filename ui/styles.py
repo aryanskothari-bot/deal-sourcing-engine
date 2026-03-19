@@ -48,17 +48,7 @@ def inject_css():
         border-right: 1px solid rgba(213,169,68,.18) !important;
     }
     [data-testid="stSidebar"] * { color: rgba(246,241,231,.75) !important; }
-    /* Show sidebar collapse/expand button */
-    [data-testid="collapsedControl"],
-    button[kind="header"],
-    [data-testid="stSidebarCollapsedControl"] {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        color: var(--gold3) !important;
-        background: var(--eng-bg) !important;
-        border: 1px solid rgba(213,169,68,.2) !important;
-    }
+
     [data-testid="stSidebar"] .stMarkdown h3 {
         font-family: var(--mono) !important;
         font-size: 8px !important;
