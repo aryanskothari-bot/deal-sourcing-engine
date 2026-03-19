@@ -42,7 +42,7 @@ metric_row([
     {"val": str(len(df)),                                               "lbl": "Companies in Universe"},
     {"val": f"{df['Score'].mean():.0f} / 100",                         "lbl": "Avg Acquisition Score", "cls": "gold"},
     {"val": f"€{df['Mkt Cap (€bn)'].median():.1f}bn",                  "lbl": "Median Market Cap"},
-    {"val": f"{df['EV/EBITDA (×)'].median():.1f}×",                    "lbl": "Median EV/EBITDA"},
+    {"val": f"{df['EV/EBITDA'].median():.1f}×",                    "lbl": "Median EV/EBITDA"},
     {"val": f"{df['EBITDA Margin %'].median():.1f}%",                  "lbl": "Median EBITDA Margin"},
 ])
 
@@ -68,7 +68,7 @@ if top is not None:
         st.markdown(f"""
         <div style="background:var(--paper2);padding:20px 22px;border:1px solid rgba(16,14,12,.08)">
             <div style="font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase;margin-bottom:6px">EV / EBITDA</div>
-            <div style="font-family:var(--serif);font-size:32px;font-weight:500;color:var(--ink)">{top.get("EV/EBITDA (×)",0):.1f}×</div>
+            <div style="font-family:var(--serif);font-size:32px;font-weight:500;color:var(--ink)">{top.get("EV/EBITDA",0):.1f}×</div>
         </div>""", unsafe_allow_html=True)
     with t4:
         st.markdown(f"""
@@ -80,7 +80,7 @@ if top is not None:
 # ─── TOP 5 TABLE ──────────────────────────────────────────────────────────────
 st.markdown("---")
 sec_label("Universe Ranking — Top 5 Targets")
-cols_show = ["Company", "Sector", "Score", "Mkt Cap (€bn)", "EV/EBITDA (×)", "EBITDA Margin %", "ND/EBITDA"]
+cols_show = ["Company", "Sector", "Score", "Mkt Cap (€bn)", "EV/EBITDA", "EBITDA Margin %", "ND/EBITDA"]
 top5 = df[cols_show].head(5).reset_index(drop=True)
 top5.index = top5.index + 1
 st.dataframe(top5, use_container_width=True, height=220)
