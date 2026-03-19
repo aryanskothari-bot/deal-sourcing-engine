@@ -318,6 +318,34 @@ def inject_css():
     .tooltip-pill.gold  { color: var(--gold);  border-color: rgba(155,111,41,.3); background: rgba(155,111,41,.05); }
     .tooltip-pill.red   { color: var(--red);   border-color: rgba(140,27,27,.3);  background: rgba(140,27,27,.05); }
     .tooltip-pill.muted { color: var(--muted); border-color: rgba(16,14,12,.12);  background: transparent; }
+
+    /* ─── EMBED NAV BAR ─── */
+    .embed-nav {
+        display: flex;
+        gap: 4px;
+        padding: 10px 16px;
+        background: var(--eng-bg, #0A1628);
+        border-bottom: 1px solid rgba(213,169,68,.2);
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+    }
+    .embed-nav a {
+        font-family: var(--mono);
+        font-size: 8px;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: rgba(246,241,231,.5);
+        padding: 5px 12px;
+        border: 1px solid rgba(255,255,255,.08);
+        text-decoration: none;
+        transition: all .2s;
+        background: transparent;
+    }
+    .embed-nav a:hover, .embed-nav a.active {
+        color: var(--gold3, #D5A944);
+        border-color: rgba(213,169,68,.35);
+        background: rgba(213,169,68,.06);
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -387,3 +415,24 @@ def status_wip(text: str = "Module in Development — Coming in Next Sprint"):
 
 def pill(text: str, color: str = "muted"):
     return f'<span class="tooltip-pill {color}">{text}</span>'
+
+def nav_bar(current: str = "Home"):
+    """Render a horizontal navigation bar that works in embed mode."""
+    pages = [
+        ("Home",        "pages/1_Home.py"),
+        ("Screener",    "pages/2_Screener.py"),
+        ("Ranker",      "pages/3_Ranker.py"),
+        ("Financials",  "pages/4_Financials.py"),
+        ("Shortlist",   "pages/5_Shortlist.py"),
+        ("Diligence",   "pages/6_Diligence.py"),
+        ("Signals",     "pages/7_Signals.py"),
+    ]
+    cols = st.columns(len(pages))
+    for col, (label, page) in zip(cols, pages):
+        with col:
+            is_current = label == current
+            st.page_link(
+                page,
+                label=f"{'● ' if is_current else ''}{label}",
+                use_container_width=True
+            )
