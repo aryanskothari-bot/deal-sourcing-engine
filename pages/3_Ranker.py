@@ -8,7 +8,7 @@ import pandas as pd
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from ui.styles import inject_css, page_header, sec_label, metric_row, score_bar
+from ui.styles import inject_css, page_header, sec_label, metric_row, score_bar, nav_bar
 from data_sources.yfinance_loader import fetch_universe
 from data_sources.static_loader import get_static_df
 from modules.ranker import score_universe, get_pillar_scores, SCORING_PILLARS
@@ -16,6 +16,7 @@ from utils.charts import radar_chart, score_bars
 
 st.set_page_config(page_title="Target Ranker", page_icon="🎯", layout="wide")
 inject_css()
+nav_bar("Ranker")
 
 # ─── SIDEBAR NAVIGATION ───────────────────────────────────────────────────────
 with st.sidebar:
