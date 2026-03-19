@@ -18,7 +18,7 @@ from data_sources.static_loader import get_static_df, STATIC_COMPANIES, get_stat
 from config import SBF120_TICKERS, TICKER_SECTOR_MAP
 
 
-@st.cache_data(ttl=3600, show_spinner=False)
+@st.cache_data(ttl=14400, show_spinner=False)
 def fetch_universe() -> pd.DataFrame:
     """
     Fetch market data for the full SBF 120 sample.
@@ -84,7 +84,7 @@ def _enrich_static() -> pd.DataFrame:
     return df
 
 
-@st.cache_data(ttl=3600, show_spinner=False)
+@st.cache_data(ttl=14400, show_spinner=False)
 def fetch_financials(ticker: str) -> Optional[dict]:
     """
     Fetch 5-year historical income statement for a single ticker.
