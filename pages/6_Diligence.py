@@ -31,8 +31,6 @@ st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>"
 # ──────────────────────────────────────────────────────────────────────────────
 
 
-("Diligence")
-
 page_header(
     "FDD-Style Preliminary <em>Diligence View</em>",
     "QoE · Adjusted EBITDA Bridge · Working Capital · Net Debt · Red Flag Panel"
