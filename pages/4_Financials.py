@@ -29,8 +29,6 @@ st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>"
 # ──────────────────────────────────────────────────────────────────────────────
 
 
-("Financials")
-
 page_header("Financial Statement <em>Standardisation</em>", "5-year IS history · Common-size · Key ratios · Trend charts")
 
 # ─── LOAD UNIVERSE ────────────────────────────────────────────────────────────
