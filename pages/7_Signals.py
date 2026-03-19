@@ -16,6 +16,24 @@ from config import COLORS
 
 st.set_page_config(page_title="Deal Signal Monitor", page_icon="📡", layout="wide")
 inject_css()
+
+# ─── TOP NAV BAR (works in embed mode — no sidebar needed) ───────────────────
+_nav_cols = st.columns(7)
+_nav_pages = [
+    ("pages/1_Home.py",       "Home"),
+    ("pages/2_Screener.py",   "Screener"),
+    ("pages/3_Ranker.py",     "Ranker"),
+    ("pages/4_Financials.py", "Financials"),
+    ("pages/5_Shortlist.py",  "Shortlist"),
+    ("pages/6_Diligence.py",  "Diligence"),
+    ("pages/7_Signals.py",    "Signals"),
+]
+for _col, (_pg, _lbl) in zip(_nav_cols, _nav_pages):
+    with _col:
+        st.page_link(_pg, label=_lbl, use_container_width=True)
+st.markdown("<hr style='margin:0 0 8px 0;border-color:rgba(155,111,41,.3)'>", unsafe_allow_html=True)
+# ─────────────────────────────────────────────────────────────────────────────
+
 nav_bar("Signals")
 
 page_header(
@@ -91,98 +109,6 @@ SIGNALS = [
 ]
 
 # ─── FILTERS ──────────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("### Signal Filters")
-
-    severity_filter = st.multiselect(
-        "Severity",
-        ["high", "medium", "low"],
-        default=["high", "medium", "low"],
-        format_func=lambda x: {"high": "🔴 High", "medium": "🟡 Medium", "low": "🟢 Low"}[x]
-    )
-
-    type_options = list(set(s["type"] for s in SIGNALS))
-    type_filter = st.multiselect("Signal Type", type_options, default=type_options)
-
-    st.markdown("---")
-    st.markdown(f"""
-    <div style="font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(246,241,231,.4)">
-        Last Updated
-    </div>
-    <div style="font-family:var(--mono);font-size:10px;color:rgba(213,169,68,.8);margin-top:4px">
-        {datetime.now().strftime("%d %b %Y · %H:%M CET")}
-    </div>
-    """, unsafe_allow_html=True)
-
-# ─── APPLY FILTERS ────────────────────────────────────────────────────────────
-filtered = [s for s in SIGNALS if s["severity"] in severity_filter and s["type"] in type_filter]
-
-# ─── SUMMARY METRICS ──────────────────────────────────────────────────────────
-high_c   = sum(1 for s in filtered if s["severity"] == "high")
-medium_c = sum(1 for s in filtered if s["severity"] == "medium")
-low_c    = sum(1 for s in filtered if s["severity"] == "low")
-
-metric_row([
-    {"val": str(len(filtered)),  "lbl": "Active Signals"},
-    {"val": str(high_c),         "lbl": "High Severity",   "cls": "down"},
-    {"val": str(medium_c),       "lbl": "Medium Severity", "cls": "gold"},
-    {"val": str(low_c),          "lbl": "Low Severity",    "cls": "up"},
-    {"val": str(len(set(s['type'] for s in filtered))), "lbl": "Signal Types"},
-])
-
-st.markdown("---")
-sec_label(f"Live Signal Feed — {len(filtered)} Signals")
-
-# ─── SIGNAL CARDS ─────────────────────────────────────────────────────────────
-if not filtered:
-    st.warning("No signals match the current filters.")
-else:
-    for signal in filtered:
-        sev   = signal["severity"]
-        sev_colour = {"high": "var(--red)", "medium": "var(--gold)", "low": "var(--green)"}[sev]
-        sev_bg     = {"high": "rgba(140,27,27,.05)", "medium": "rgba(213,169,68,.05)", "low": "rgba(27,75,43,.05)"}[sev]
-        sev_border = {"high": "rgba(140,27,27,.35)", "medium": "rgba(213,169,68,.35)", "low": "rgba(27,75,43,.25)"}[sev]
-        sev_label  = {"high": "🔴 HIGH", "medium": "🟡 MEDIUM", "low": "🟢 LOW"}[sev]
-
-        tags_html = "".join([
-            f'<span style="font-family:var(--mono);font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;'
-            f'padding:3px 9px;border:1px solid rgba(16,14,12,.1);color:var(--muted);margin-right:5px">{t}</span>'
-            for t in signal["tags"]
-        ])
-
-        st.markdown(f"""
-        <div style="border:1px solid {sev_border};border-left:3px solid {sev_colour};
-                    background:{sev_bg};padding:18px 20px;margin-bottom:12px">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
-                <div style="display:flex;align-items:center;gap:12px">
-                    <span style="font-family:var(--mono);font-size:7.5px;letter-spacing:.18em;
-                                 text-transform:uppercase;color:{sev_colour};
-                                 border:1px solid {sev_border};padding:3px 10px">{sev_label}</span>
-                    <span style="font-family:var(--mono);font-size:8px;letter-spacing:.15em;
-                                 text-transform:uppercase;color:var(--faint);
-                                 border:1px solid rgba(16,14,12,.08);padding:3px 10px">{signal["type"]}</span>
-                </div>
-                <div style="text-align:right">
-                    <div style="font-family:var(--mono);font-size:8.5px;color:var(--faint)">{signal["date"]}</div>
-                    <div style="font-family:var(--mono);font-size:8px;color:var(--gold);margin-top:2px">{signal["ticker"]}</div>
-                </div>
-            </div>
-            <div style="font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);
-                        margin-bottom:8px;line-height:1.3">{signal["company"]} — {signal["headline"]}</div>
-            <div style="font-family:var(--sans);font-size:12.5px;color:var(--ink2);
-                        line-height:1.7;margin-bottom:12px">{signal["detail"]}</div>
-            <div style="display:flex;justify-content:space-between;align-items:center">
-                <div>{tags_html}</div>
-                <div style="font-family:var(--mono);font-size:7.5px;letter-spacing:.12em;
-                            color:var(--faint);text-transform:uppercase">
-                    Source: {signal["source"]}
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-st.markdown("---")
-
 # ─── SIGNAL HEATMAP BY SECTOR ─────────────────────────────────────────────────
 sec_label("Signal Heatmap by Sector")
 
