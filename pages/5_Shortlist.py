@@ -18,6 +18,24 @@ from config import EXPORT_FILENAME
 
 st.set_page_config(page_title="Shortlist", page_icon="📋", layout="wide")
 inject_css()
+
+# ─── TOP NAV BAR (works in embed mode — no sidebar needed) ───────────────────
+_nav_cols = st.columns(7)
+_nav_pages = [
+    ("pages/1_Home.py",       "Home"),
+    ("pages/2_Screener.py",   "Screener"),
+    ("pages/3_Ranker.py",     "Ranker"),
+    ("pages/4_Financials.py", "Financials"),
+    ("pages/5_Shortlist.py",  "Shortlist"),
+    ("pages/6_Diligence.py",  "Diligence"),
+    ("pages/7_Signals.py",    "Signals"),
+]
+for _col, (_pg, _lbl) in zip(_nav_cols, _nav_pages):
+    with _col:
+        st.page_link(_pg, label=_lbl, use_container_width=True)
+st.markdown("<hr style='margin:0 0 8px 0;border-color:rgba(155,111,41,.3)'>", unsafe_allow_html=True)
+# ─────────────────────────────────────────────────────────────────────────────
+
 nav_bar("Shortlist")
 
 page_header("Deal <em>Shortlist</em>", "Ranked targets · Score breakdown · Inclusion rationale · Excel export")
@@ -43,26 +61,6 @@ with st.spinner("Loading shortlist..."):
 df = score_universe(raw)
 
 # ── CONTROLS ──────────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("### Shortlist Controls")
-    top_n     = st.slider("Number of targets", 3, 15, 6, step=1)
-    min_score = st.slider("Minimum score", 0, 100, 50, step=5)
-
-shortlist = df[df["Score"] >= min_score].head(top_n).reset_index(drop=True)
-
-# ── SUMMARY ───────────────────────────────────────────────────────────────────
-if len(shortlist) > 0:
-    top_sector = shortlist["Sector"].value_counts().index[0]
-    metric_row([
-        {"val": str(len(shortlist)),                                "lbl": "Shortlisted Targets"},
-        {"val": f"{shortlist['Score'].mean():.0f}",                 "lbl": "Avg Score", "cls": "gold"},
-        {"val": top_sector,                                         "lbl": "Top Sector"},
-        {"val": f"€{shortlist['Mkt Cap (€bn)'].mean():.1f}bn",     "lbl": "Avg Mkt Cap"},
-        {"val": f"{shortlist['EBITDA Margin %'].mean():.1f}%",     "lbl": "Avg EBITDA Margin"},
-    ])
-
-st.markdown("---")
-
 # ── TARGET CARDS ──────────────────────────────────────────────────────────────
 sec_label(f"Top {len(shortlist)} Acquisition Targets")
 
