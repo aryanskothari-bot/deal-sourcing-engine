@@ -18,6 +18,24 @@ from config import COLORS
 
 st.set_page_config(page_title="Diligence View", page_icon="🔍", layout="wide")
 inject_css()
+
+# ─── TOP NAV BAR (works in embed mode — no sidebar needed) ───────────────────
+_nav_cols = st.columns(7)
+_nav_pages = [
+    ("pages/1_Home.py",       "Home"),
+    ("pages/2_Screener.py",   "Screener"),
+    ("pages/3_Ranker.py",     "Ranker"),
+    ("pages/4_Financials.py", "Financials"),
+    ("pages/5_Shortlist.py",  "Shortlist"),
+    ("pages/6_Diligence.py",  "Diligence"),
+    ("pages/7_Signals.py",    "Signals"),
+]
+for _col, (_pg, _lbl) in zip(_nav_cols, _nav_pages):
+    with _col:
+        st.page_link(_pg, label=_lbl, use_container_width=True)
+st.markdown("<hr style='margin:0 0 8px 0;border-color:rgba(155,111,41,.3)'>", unsafe_allow_html=True)
+# ─────────────────────────────────────────────────────────────────────────────
+
 nav_bar("Diligence")
 
 page_header(
