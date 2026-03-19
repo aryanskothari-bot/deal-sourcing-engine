@@ -39,8 +39,8 @@ def inject_css():
     }
 
     /* ── HIDE STREAMLIT DEFAULT CHROME ── */
-    #MainMenu, footer, header { visibility: hidden; }
-    .block-container { padding-top: 1.8rem !important; padding-bottom: 2rem !important; max-width: 1320px !important; }
+    #MainMenu { visibility: hidden; } footer { visibility: hidden; } header { visibility: hidden; } [data-testid="stSidebarCollapsedControl"] { visibility: visible !important; display: flex !important; }
+    .block-container { padding-top: 1.8rem !important; padding-bottom: 2rem !important; max-width: 1320px !important; } [data-testid="stSidebarCollapsedControl"] { visibility: visible !important; display: flex !important; opacity: 1 !important; } [data-testid="collapsedControl"] { visibility: visible !important; display: flex !important; }
 
     /* ── SIDEBAR ── */
     [data-testid="stSidebar"] {
