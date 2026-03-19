@@ -193,6 +193,86 @@ else:
     </div>
 </div>""", unsafe_allow_html=True)
 
+# ── TIMELINE VIEW ──────────────────────────────────────────────────────────────
+st.markdown("---")
+sec_label("Signal Timeline — Activity Calendar")
+
+
+
+# Group signals by date and severity
+from collections import defaultdict
+date_map = defaultdict(lambda: {"high":0,"medium":0,"low":0,"signals":[]})
+for s in SIGNALS:
+    date_map[s["date"]]["high"]    += 1 if s["severity"]=="high"   else 0
+    date_map[s["date"]]["medium"]  += 1 if s["severity"]=="medium" else 0
+    date_map[s["date"]]["low"]     += 1 if s["severity"]=="low"    else 0
+    date_map[s["date"]]["signals"].append(s["company"])
+
+dates_sorted = sorted(date_map.keys(), reverse=True)
+
+fig_tl = go.Figure()
+y_labels = []
+for i, date in enumerate(dates_sorted):
+    d = date_map[date]
+    total = d["high"] + d["medium"] + d["low"]
+    y_labels.append(f"{date}  ({', '.join(d['signals'])})")
+    if d["high"]:
+        fig_tl.add_trace(go.Bar(
+            x=[d["high"]], y=[i], orientation="h",
+            marker_color="#8C1B1B", name="High" if i==0 else None,
+            showlegend=(i==0), legendgroup="high",
+            hovertemplate=f"<b>{date}</b><br>High: {d['high']}<extra></extra>",
+        ))
+    if d["medium"]:
+        fig_tl.add_trace(go.Bar(
+            x=[d["medium"]], y=[i], orientation="h",
+            marker_color="#D5A944", name="Medium" if i==0 else None,
+            showlegend=(i==0), legendgroup="medium",
+            hovertemplate=f"<b>{date}</b><br>Medium: {d['medium']}<extra></extra>",
+        ))
+    if d["low"]:
+        fig_tl.add_trace(go.Bar(
+            x=[d["low"]], y=[i], orientation="h",
+            marker_color="#1B4B2B", name="Low" if i==0 else None,
+            showlegend=(i==0), legendgroup="low",
+            hovertemplate=f"<b>{date}</b><br>Low: {d['low']}<extra></extra>",
+        ))
+
+fig_tl.update_layout(
+    paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="#F6F1E7",
+    font=dict(family="DM Mono, Courier New, monospace", color="#100E0C", size=10),
+    margin=dict(l=12, r=12, t=40, b=12),
+    barmode="stack",
+    title=dict(text="Signal Activity Timeline — by Date & Severity",
+               font=dict(size=13, family="Cormorant Garamond"), x=0),
+    xaxis=dict(title="Signal Count", tickfont=dict(size=10, family="DM Mono"),
+               showgrid=True, gridcolor="rgba(16,14,12,.06)", zeroline=False, dtick=1),
+    yaxis=dict(tickvals=list(range(len(dates_sorted))),
+               ticktext=dates_sorted,
+               tickfont=dict(size=9, family="DM Mono"),
+               autorange="reversed"),
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1,
+                font=dict(size=10, family="DM Mono"), title_text="Severity"),
+    height=max(280, len(dates_sorted)*42),
+)
+st.plotly_chart(fig_tl, use_container_width=True)
+
+# Signal volume summary table
+st.markdown("<br>", unsafe_allow_html=True)
+summary_rows = []
+for date in dates_sorted:
+    d = date_map[date]
+    summary_rows.append({
+        "Date":     date,
+        "Companies": ", ".join(d["signals"]),
+        "High 🔴":   d["high"]   or "",
+        "Medium 🟡": d["medium"] or "",
+        "Low 🟢":    d["low"]    or "",
+        "Total":    d["high"]+d["medium"]+d["low"],
+    })
+import pandas as pd
+st.dataframe(pd.DataFrame(summary_rows), use_container_width=True, hide_index=True)
+
 st.markdown("""
 <div style="font-family:var(--mono);font-size:7.5px;letter-spacing:.15em;color:var(--faint);text-align:center;padding-top:20px;text-transform:uppercase">
     Deal Signal Monitor · Aryan S. Kothari · SKEMA Paris 2025 · All signals illustrative — not investment advice
