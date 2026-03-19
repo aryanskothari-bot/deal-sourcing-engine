@@ -8,7 +8,7 @@ import pandas as pd
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from ui.styles import inject_css, page_header, sec_label, metric_row
+from ui.styles import inject_css, page_header, sec_label, metric_row, nav_bar
 from data_sources.yfinance_loader import fetch_universe
 from data_sources.static_loader import get_static_df
 from modules.screener import apply_filters, summary_stats
@@ -18,6 +18,7 @@ from config import SECTORS, SCREENER_DEFAULTS
 
 st.set_page_config(page_title="Screener", page_icon="🔍", layout="wide")
 inject_css()
+nav_bar("Screener")
 
 # ─── SIDEBAR NAVIGATION ───────────────────────────────────────────────────────
 with st.sidebar:
