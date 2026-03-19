@@ -14,7 +14,6 @@ _LAYOUT = dict(
     plot_bgcolor="#F6F1E7",
     font=dict(family="DM Mono, Courier New, monospace", color="#100E0C", size=11),
     margin=dict(l=12, r=12, t=36, b=12),
-    showlegend=False,
 )
 
 _AXIS = dict(
