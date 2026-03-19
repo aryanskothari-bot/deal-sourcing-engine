@@ -1,162 +1,106 @@
 """
 config.py — Deal Sourcing & Preliminary Diligence Engine
-Central configuration: tickers, scoring weights, UI constants, column definitions.
+Central configuration: tickers, scoring weights, UI constants.
 """
 
-# ─── APP META ────────────────────────────────────────────────────────────────
-APP_TITLE       = "Deal Sourcing & Preliminary Diligence Engine"
-APP_SUBTITLE    = "European M&A · Phase 1 — Euronext Paris / SBF 120"
-APP_VERSION     = "1.0.0-alpha"
-APP_AUTHOR      = "Aryan Shrenick Kothari"
+APP_TITLE    = "Deal Sourcing & Preliminary Diligence Engine"
+APP_SUBTITLE = "European M&A · Phase 1 — Euronext Paris / SBF 120"
+APP_VERSION  = "1.0.0-alpha"
+APP_AUTHOR   = "Aryan Shrenick Kothari"
 
-# ─── PHASE 1 UNIVERSE — SBF 120 SAMPLE (yfinance tickers) ───────────────────
-# Format: {display_name: yfinance_ticker}
+# ─── 30-COMPANY SBF 120 UNIVERSE ────────────────────────────────────────────
 SBF120_TICKERS = {
     # Luxury & Consumer
-    "LVMH":                "MC.PA",
-    "Hermès":              "RMS.PA",
-    "Kering":              "KER.PA",
-    "L'Oréal":             "OR.PA",
-    "Rémy Cointreau":      "RCO.PA",
-    "Pernod Ricard":       "RI.PA",
-
-    # Industrials & Engineering
-    "Airbus":              "AIR.PA",
-    "Safran":              "SAF.PA",
-    "Thales":              "HO.PA",
-    "Schneider Electric":  "SU.PA",
-    "Legrand":             "LR.PA",
-    "Saint-Gobain":        "SGO.PA",
-    "Vinci":               "DG.PA",
-    "Bouygues":            "EN.PA",
-
-    # Energy & Utilities
-    "TotalEnergies":       "TTE.PA",
-    "Engie":               "ENGI.PA",
-    "EDF":                 "EDF.PA",
-
-    # Financial Services
-    "BNP Paribas":         "BNP.PA",
-    "Société Générale":    "GLE.PA",
-    "Crédit Agricole":     "ACA.PA",
-    "AXA":                 "CS.PA",
-
+    "Kering":           "KER.PA",
+    "LVMH":             "MC.PA",
+    "Remy Cointreau":   "RCO.PA",
+    "Pernod Ricard":    "RI.PA",
+    "Hermes":           "RMS.PA",
     # Healthcare & Pharma
-    "Sanofi":              "SAN.PA",
-    "bioMérieux":          "BIM.PA",
-    "Ipsen":               "IPN.PA",
-
+    "Ipsen":            "IPN.PA",
+    "bioMerieux":       "BIM.PA",
+    "Sanofi":           "SAN.PA",
+    "Eurofins":         "ERF.PA",
     # Technology & Media
-    "Capgemini":           "CAP.PA",
-    "Dassault Systèmes":   "DSY.PA",
-    "Atos":                "ATO.PA",
-    "Vivendi":             "VIV.PA",
-
+    "Capgemini":        "CAP.PA",
+    "Dassault Systemes":"DSY.PA",
+    "Atos":             "ATO.PA",
+    "Vivendi":          "VIV.PA",
+    "Worldline":        "WLN.PA",
+    # Industrials & Engineering
+    "Bouygues":         "EN.PA",
+    "Saint-Gobain":     "SGO.PA",
+    "Legrand":          "LR.PA",
+    "Safran":           "SAF.PA",
+    "Schneider Electric":"SU.PA",
+    "Vallourec":        "VK.PA",
     # Retail & Distribution
-    "Carrefour":           "CA.PA",
-    "LVMH (Retail arm)":   "MC.PA",
-
+    "Carrefour":        "CA.PA",
+    "Sodexo":           "SW.PA",
+    # Energy & Utilities
+    "TotalEnergies":    "TTE.PA",
+    "Engie":            "ENGI.PA",
+    "Veolia":           "VIE.PA",
+    # Financial Services
+    "BNP Paribas":      "BNP.PA",
+    "AXA":              "CS.PA",
     # Real Estate
-    "Unibail-Rodamco":     "URW.AS",
-    "Klepierre":           "LI.PA",
+    "Unibail-Rodamco":  "URW.AS",
+    "Covivio":          "COV.PA",
 }
-
-# ─── SECTOR MAPPING ──────────────────────────────────────────────────────────
-SECTORS = [
-    "All Sectors",
-    "Luxury & Consumer",
-    "Industrials & Engineering",
-    "Energy & Utilities",
-    "Financial Services",
-    "Healthcare & Pharma",
-    "Technology & Media",
-    "Retail & Distribution",
-    "Real Estate",
-]
 
 TICKER_SECTOR_MAP = {
-    "MC.PA": "Luxury & Consumer",
-    "RMS.PA": "Luxury & Consumer",
-    "KER.PA": "Luxury & Consumer",
-    "OR.PA": "Luxury & Consumer",
-    "RCO.PA": "Luxury & Consumer",
-    "RI.PA": "Luxury & Consumer",
-    "AIR.PA": "Industrials & Engineering",
-    "SAF.PA": "Industrials & Engineering",
-    "HO.PA": "Industrials & Engineering",
-    "SU.PA": "Industrials & Engineering",
-    "LR.PA": "Industrials & Engineering",
-    "SGO.PA": "Industrials & Engineering",
-    "DG.PA": "Industrials & Engineering",
-    "EN.PA": "Industrials & Engineering",
-    "TTE.PA": "Energy & Utilities",
+    "KER.PA":  "Luxury & Consumer",
+    "MC.PA":   "Luxury & Consumer",
+    "RCO.PA":  "Luxury & Consumer",
+    "RI.PA":   "Luxury & Consumer",
+    "RMS.PA":  "Luxury & Consumer",
+    "IPN.PA":  "Healthcare & Pharma",
+    "BIM.PA":  "Healthcare & Pharma",
+    "SAN.PA":  "Healthcare & Pharma",
+    "ERF.PA":  "Healthcare & Pharma",
+    "CAP.PA":  "Technology & Media",
+    "DSY.PA":  "Technology & Media",
+    "ATO.PA":  "Technology & Media",
+    "VIV.PA":  "Technology & Media",
+    "WLN.PA":  "Technology & Media",
+    "EN.PA":   "Industrials & Engineering",
+    "SGO.PA":  "Industrials & Engineering",
+    "LR.PA":   "Industrials & Engineering",
+    "SAF.PA":  "Industrials & Engineering",
+    "SU.PA":   "Industrials & Engineering",
+    "VK.PA":   "Industrials & Engineering",
+    "CA.PA":   "Retail & Distribution",
+    "SW.PA":   "Retail & Distribution",
+    "TTE.PA":  "Energy & Utilities",
     "ENGI.PA": "Energy & Utilities",
-    "EDF.PA": "Energy & Utilities",
-    "BNP.PA": "Financial Services",
-    "GLE.PA": "Financial Services",
-    "ACA.PA": "Financial Services",
-    "CS.PA": "Financial Services",
-    "SAN.PA": "Healthcare & Pharma",
-    "BIM.PA": "Healthcare & Pharma",
-    "IPN.PA": "Healthcare & Pharma",
-    "CAP.PA": "Technology & Media",
-    "DSY.PA": "Technology & Media",
-    "ATO.PA": "Technology & Media",
-    "VIV.PA": "Technology & Media",
-    "CA.PA": "Retail & Distribution",
-    "URW.AS": "Real Estate",
-    "LI.PA": "Real Estate",
+    "VIE.PA":  "Energy & Utilities",
+    "BNP.PA":  "Financial Services",
+    "CS.PA":   "Financial Services",
+    "URW.AS":  "Real Estate",
+    "COV.PA":  "Real Estate",
 }
 
-# ─── SCREENER FILTER DEFAULTS ─────────────────────────────────────────────────
-SCREENER_DEFAULTS = {
-    "mktcap_min_bn":    0.5,    # EUR bn
-    "mktcap_max_bn":    50.0,
-    "ev_min_bn":        0.5,
-    "ev_max_bn":        80.0,
-    "revenue_min_mn":   100.0,  # EUR mn
-    "ebitda_margin_min": -5.0,  # %
-    "net_debt_ebitda_max": 8.0,
-    "ev_ebitda_max":    20.0,
-}
-
-# ─── 8-PILLAR SCORING WEIGHTS ─────────────────────────────────────────────────
+# ─── 8-PILLAR SCORING WEIGHTS ───────────────────────────────────────────────
 SCORING_PILLARS = {
-    "Revenue Growth":           0.15,
-    "Profitability":            0.15,
-    "Balance Sheet Quality":    0.12,
-    "Leverage":                 0.12,
-    "Valuation Attractiveness": 0.15,
-    "Size Compatibility":       0.10,
-    "Geographic Relevance":     0.08,
-    "Acquisition Fit":          0.13,
+    "score_growth":        {"weight": 0.15, "label": "Revenue Growth"},
+    "score_profitability": {"weight": 0.15, "label": "Profitability"},
+    "score_balance_sheet": {"weight": 0.12, "label": "Balance Sheet"},
+    "score_leverage":      {"weight": 0.12, "label": "Leverage"},
+    "score_valuation":     {"weight": 0.15, "label": "Valuation"},
+    "score_size":          {"weight": 0.10, "label": "Size Fit"},
+    "score_geography":     {"weight": 0.08, "label": "Geography"},
+    "score_acq_fit":       {"weight": 0.13, "label": "Acquisition Fit"},
 }
 
-# ─── FINANCIAL STATEMENT PERIODS ─────────────────────────────────────────────
-HIST_YEARS = 5          # years of history to pull
-FORECAST_YEARS = 3      # years to forecast
-
-# ─── DILIGENCE FLAGS ──────────────────────────────────────────────────────────
-FLAG_SEVERITY = {
-    "HIGH":   "🔴",
-    "MEDIUM": "🟡",
-    "LOW":    "🟢",
-}
-
-# ─── EXPORT ───────────────────────────────────────────────────────────────────
-EXPORT_FILENAME = "deal_sourcing_shortlist.xlsx"
-
-# ─── UI ───────────────────────────────────────────────────────────────────────
-PAGE_ICON = "⚙️"
-SIDEBAR_WIDTH = 320
-
-# Colour palette — mirrors portfolio site
 COLORS = {
-    "gold":     "#9B6F29",
-    "gold3":    "#D5A944",
-    "green":    "#1B4B2B",
-    "ink":      "#100E0C",
-    "paper":    "#F6F1E7",
-    "red":      "#8C1B1B",
-    "muted":    "#7B7368",
+    "gold":   "#9B6F29",
+    "gold3":  "#D5A944",
+    "green":  "#1B4B2B",
+    "ink":    "#100E0C",
+    "paper":  "#F6F1E7",
+    "muted":  "#7B7368",
+    "red":    "#8C1B1B",
 }
+
+EXPORT_FILENAME = "deal_sourcing_shortlist.xlsx"
