@@ -27,7 +27,7 @@ with _c7: st.page_link("pages/7_Signals.py",     label="📡 Signals",    use_co
 st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>", unsafe_allow_html=True)
 
 page_header("Entry Valuation &amp; <em>IRR Model</em>",
-            "Acquisition entry pricing · Leverage structure · Exit assumptions · Returns analysis")
+            "Back-of-envelope returns model — adjust the assumptions, see what breaks")
 
 # ── LOAD DATA ─────────────────────────────────────────────────────────────────
 with st.spinner("Loading universe..."):
@@ -39,13 +39,13 @@ df = score_universe(raw)
 
 # ── COMPANY SELECTOR ──────────────────────────────────────────────────────────
 companies = df["Company"].tolist()
-selected  = st.selectbox("Select Acquisition Target", companies, index=0)
+selected  = st.selectbox("Company", companies, index=0)
 row       = df[df["Company"] == selected].iloc[0]
 
 st.markdown("---")
 
 # ── ENTRY ASSUMPTIONS ─────────────────────────────────────────────────────────
-sec_label("01 · Entry Assumptions")
+sec_label("Entry assumptions")
 
 col1, col2, col3 = st.columns(3)
 
@@ -80,7 +80,7 @@ with col3:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── MODEL INPUTS ──────────────────────────────────────────────────────────────
-sec_label("02 · Deal Structure Inputs")
+sec_label("Deal structure")
 
 inp1, inp2, inp3 = st.columns(3)
 
@@ -122,7 +122,7 @@ irr            = (moic ** (1 / hold_period) - 1) * 100 if moic > 0 else 0
 
 # ── RESULTS ───────────────────────────────────────────────────────────────────
 st.markdown("---")
-sec_label("03 · Returns Summary")
+sec_label("Returns")
 
 irr_color  = "var(--green)" if irr >= 20 else ("var(--gold)" if irr >= 15 else "var(--red)")
 moic_color = "var(--green)" if moic >= 2.5 else ("var(--gold)" if moic >= 2.0 else "var(--red)")
@@ -138,7 +138,7 @@ metric_row([
 
 # IRR sensitivity table
 st.markdown("<br>", unsafe_allow_html=True)
-sec_label("04 · IRR Sensitivity — Exit Multiple vs EBITDA CAGR")
+sec_label("IRR sensitivity")
 
 cagr_range  = [2, 5, 8, 11, 14]
 mult_range  = [exit_multiple - 2, exit_multiple - 1, exit_multiple, exit_multiple + 1, exit_multiple + 2]
@@ -182,7 +182,7 @@ st.plotly_chart(fig_sens, use_container_width=True)
 
 # ── VALUE BRIDGE ──────────────────────────────────────────────────────────────
 st.markdown("---")
-sec_label("05 · Value Creation Bridge")
+sec_label("Where the return comes from")
 
 ebitda_growth_val = (exit_ebitda - curr_ebitda) * exit_multiple
 multiple_expansion = curr_ebitda * (exit_multiple - entry_multiple)
