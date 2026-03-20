@@ -29,9 +29,7 @@ st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>"
 # ──────────────────────────────────────────────────────────────────────────────
 
 
-("Ranker")
-
-page_header("Acquisition Target <em>Ranker</em>", "8-Pillar transparent scoring — 0 to 100 per company")
+page_header("Acquisition Target <em>Ranker</em>", "My scoring model — 8 criteria, explicit weights, no black box")
 
 # ─── LOAD & SCORE ─────────────────────────────────────────────────────────────
 with st.spinner("Scoring universe…"):
@@ -42,7 +40,7 @@ with st.spinner("Scoring universe…"):
 df = score_universe(raw)
 
 # ─── PILLAR WEIGHTS EXPLAINER ─────────────────────────────────────────────────
-with st.expander("📐 Scoring Methodology — 8 Pillars & Weights"):
+with st.expander("How I score each company — methodology notes"):
     cols = st.columns(4)
     for i, (pillar, weight) in enumerate(SCORING_PILLARS.items()):
         with cols[i % 4]:
@@ -52,6 +50,14 @@ with st.expander("📐 Scoring Methodology — 8 Pillars & Weights"):
                 <div style="font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;color:var(--ink)">{pillar}</div>
             </div>
             """, unsafe_allow_html=True)
+
+st.markdown("""
+<div style="background:rgba(155,111,41,.05);border-left:2px solid var(--gold);padding:10px 14px;margin-bottom:16px">
+    <span style="font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)">Note on Geography pillar — </span>
+    <span style="font-family:var(--sans);font-size:12px;color:var(--muted)">Phase 1 covers Euronext Paris only, so all companies score equally here.
+    Phase 2 will introduce cross-border scoring (DAX, FTSE, AEX) which will create real dispersion on this pillar.</span>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("---")
 
