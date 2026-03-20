@@ -32,8 +32,8 @@ st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>"
 
 
 page_header(
-    "FDD-Style Preliminary <em>Diligence View</em>",
-    "QoE · Adjusted EBITDA Bridge · Working Capital · Net Debt · Red Flag Panel"
+    "Preliminary <em>Diligence View</em>",
+    "Working notes — quality of earnings, normalisation, capital structure"
 )
 
 # ─── LOAD UNIVERSE ────────────────────────────────────────────────────────────
@@ -46,14 +46,14 @@ df = score_universe(raw)
 
 # ─── COMPANY SELECTOR ─────────────────────────────────────────────────────────
 companies = df["Company"].tolist()
-selected  = st.selectbox("Select Target Company", companies, index=0)
+selected  = st.selectbox("Company", companies, index=0)
 row = df[df["Company"] == selected].iloc[0]
 ticker = row.get("Ticker", "N/A")
 
 st.markdown("---")
 
 # ─── SECTION 1: QUALITY OF EARNINGS ─────────────────────────────────────────
-sec_label("01 · Quality of Earnings (QoE)")
+sec_label("Quality of Earnings — normalisation adjustments")
 
 col1, col2, col3 = st.columns(3)
 
@@ -62,12 +62,49 @@ _fin = get_static_financials(ticker)
 _static_ebitda = _fin["ebitda"][-1] if _fin and _fin.get("ebitda") else 0
 rep_ebitda = float(row.get("EBITDA (€mn)") or 0) or _static_ebitda or 1000
 
-# Simulated QoE adjustments (illustrative)
-mgmt_fees      =  round(rep_ebitda * 0.018, 1)   # +  management fees add-back
-one_off_costs  = -round(rep_ebitda * 0.042, 1)   # -  one-off restructuring
-stock_comp     = -round(rep_ebitda * 0.023, 1)   # -  stock-based compensation
-earn_out       =  round(rep_ebitda * 0.009, 1)   # +  earn-out normalisation
-adj_ebitda     = round(rep_ebitda + mgmt_fees + one_off_costs + stock_comp + earn_out, 1)
+# QoE adjustments vary by sector — standard normalisation items
+# Pharma: higher R&D reclassification, lower restructuring
+# Tech/Media: heavy stock comp, one-off transformation costs
+# Industrials: lease add-backs, pension normalisation
+# Retail/Dist: lease adjustments dominate (IFRS 16 impact)
+# Energy: decommissioning provisions, hedging gains/losses
+sector = row.get("Sector", "")
+if "Healthcare" in sector or "Pharma" in sector:
+    mgmt_fees     =  round(rep_ebitda * 0.012, 1)   # low mgmt fees in listed pharma
+    one_off_costs = -round(rep_ebitda * 0.028, 1)   # M&A transaction costs (pipeline deals)
+    stock_comp    = -round(rep_ebitda * 0.031, 1)   # executive LTIPs, higher in biotech
+    earn_out      =  round(rep_ebitda * 0.015, 1)   # milestone payments normalised
+elif "Technology" in sector or "Media" in sector:
+    mgmt_fees     =  round(rep_ebitda * 0.008, 1)   # minimal mgmt fees
+    one_off_costs = -round(rep_ebitda * 0.062, 1)   # restructuring / transformation heavy
+    stock_comp    = -round(rep_ebitda * 0.048, 1)   # highest stock comp in universe
+    earn_out      =  round(rep_ebitda * 0.006, 1)
+elif "Industrials" in sector or "Engineering" in sector:
+    mgmt_fees     =  round(rep_ebitda * 0.022, 1)   # operating lease add-backs
+    one_off_costs = -round(rep_ebitda * 0.035, 1)   # capex-heavy restructuring
+    stock_comp    = -round(rep_ebitda * 0.014, 1)   # lower SBC than tech
+    earn_out      =  round(rep_ebitda * 0.011, 1)   # project completion bonuses
+elif "Retail" in sector or "Distribution" in sector:
+    mgmt_fees     =  round(rep_ebitda * 0.031, 1)   # IFRS 16 lease add-back (significant)
+    one_off_costs = -round(rep_ebitda * 0.021, 1)   # store closure costs
+    stock_comp    = -round(rep_ebitda * 0.009, 1)   # minimal SBC
+    earn_out      =  round(rep_ebitda * 0.004, 1)
+elif "Energy" in sector or "Utilities" in sector:
+    mgmt_fees     =  round(rep_ebitda * 0.008, 1)
+    one_off_costs = -round(rep_ebitda * 0.019, 1)   # decommissioning charges
+    stock_comp    = -round(rep_ebitda * 0.007, 1)
+    earn_out      =  round(rep_ebitda * 0.025, 1)   # hedging gain normalisation
+elif "Luxury" in sector:
+    mgmt_fees     =  round(rep_ebitda * 0.014, 1)
+    one_off_costs = -round(rep_ebitda * 0.038, 1)   # brand repositioning / store refits
+    stock_comp    = -round(rep_ebitda * 0.018, 1)
+    earn_out      =  round(rep_ebitda * 0.007, 1)
+else:
+    mgmt_fees     =  round(rep_ebitda * 0.015, 1)
+    one_off_costs = -round(rep_ebitda * 0.035, 1)
+    stock_comp    = -round(rep_ebitda * 0.020, 1)
+    earn_out      =  round(rep_ebitda * 0.008, 1)
+adj_ebitda = round(rep_ebitda + mgmt_fees + one_off_costs + stock_comp + earn_out, 1)
 qoe_quality    = min(100, max(0, 100 - abs((adj_ebitda - rep_ebitda) / max(rep_ebitda, 1)) * 300))
 
 with col1:
@@ -104,7 +141,7 @@ with col3:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ─── SECTION 2: ADJUSTED EBITDA BRIDGE ───────────────────────────────────────
-sec_label("02 · Adjusted EBITDA Bridge")
+sec_label("EBITDA bridge — reported to normalised")
 
 bridge_items = [
     {"label": "Reported EBITDA",      "value": rep_ebitda,    "type": "absolute"},
@@ -132,7 +169,7 @@ st.markdown(f"""
 st.markdown("---")
 
 # ─── SECTION 3: WORKING CAPITAL ANALYSIS ─────────────────────────────────────
-sec_label("03 · Working Capital Analysis")
+sec_label("Working capital — cash conversion cycle")
 
 revenue = row.get("Revenue (€mn)", 1000) or 1000
 # Illustrative WC components (days-based)
@@ -172,7 +209,7 @@ st.markdown(f"""
 st.markdown("---")
 
 # ─── SECTION 4: NET DEBT ANALYSIS ────────────────────────────────────────────
-sec_label("04 · Net Debt & Capital Structure")
+sec_label("Net debt & capital structure")
 
 net_debt  = row.get("Net Debt (€mn)", 0) or 0
 nd_ebitda = row.get("ND/EBITDA", 0) or 0
@@ -207,7 +244,7 @@ for col, label, val, sub in nd_metrics:
 st.markdown("---")
 
 # ─── SECTION 5: RED FLAG PANEL ────────────────────────────────────────────────
-sec_label("05 · Diligence Red Flag Panel")
+sec_label("Key risks to flag before LOI")
 
 # Generate flags based on actual metrics
 flags = []
@@ -278,7 +315,9 @@ st.markdown("---")
 
 # ─── FOOTER DISCLAIMER ───────────────────────────────────────────────────────
 st.markdown(f"""
-<div style="font-family:var(--mono);font-size:7.5px;letter-spacing:.15em;color:var(--faint);text-align:center;padding-top:20px;border-top:1px solid rgba(16,14,12,.07);text-transform:uppercase">
-    Deal Sourcing &amp; Preliminary Diligence Engine · Aryan S. Kothari · SKEMA Paris 2025 · For demonstration purposes only — not investment advice
+<div style="font-family:var(--mono);font-size:7.5px;letter-spacing:.12em;color:var(--faint);text-align:center;padding-top:20px;border-top:1px solid rgba(16,14,12,.07)">
+    QoE adjustments are illustrative — based on sector-typical normalisation items, not company-specific audit findings.
+    Verify against full annual report and management accounts before LOI. · Data: Bloomberg, company filings, yfinance · March 2026 ·
+    Aryan S. Kothari · SKEMA Paris · Not investment advice.
 </div>
 """, unsafe_allow_html=True)
