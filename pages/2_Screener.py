@@ -31,7 +31,7 @@ st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>"
 # ──────────────────────────────────────────────────────────────────────────────
 
 
-page_header("Universe <em>Screener</em>", "Filter the SBF 120 by sector, size, multiples &amp; margins")
+page_header("Universe <em>Screener</em>", "Cut the universe down — filter by what actually matters for a deal")
 
 # ─── LOAD ────────────────────────────────────────────────────────────────────
 with st.spinner("Loading universe…"):
