@@ -90,7 +90,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 
 # ── TAB 1: Income Statement ────────────────────────────────────────────────────
 with tab1:
-    sec_label("Standardised Income Statement (€mn)")
+    sec_label("Income statement (€mn) — 5-year view")
     is_data = {"Metric": ["Revenue","EBITDA","EBIT","Net Income"]}
     for i, yr in enumerate(years):
         is_data[str(yr)] = [
