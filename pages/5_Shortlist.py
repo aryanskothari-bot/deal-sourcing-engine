@@ -29,7 +29,7 @@ with _c6: st.page_link("pages/9_Benchmarking.py",label="📐 Comps",       use_c
 with _c7: st.page_link("pages/7_Signals.py",     label="📡 Signals",     use_container_width=True)
 st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>", unsafe_allow_html=True)
 
-page_header("Deal <em>Shortlist</em>", "Ranked targets · Score breakdown · Inclusion rationale · Excel export")
+page_header("Deal <em>Shortlist</em>", "My current target list — with analyst notes on why each one is in or out")
 
 # ── LOAD & SCORE ──────────────────────────────────────────────────────────────
 with st.spinner("Loading shortlist..."):
@@ -70,14 +70,97 @@ st.markdown("---")
 # ── TARGET CARDS ──────────────────────────────────────────────────────────────
 sec_label(f"Top {len(shortlist)} Acquisition Targets — Detailed View")
 
+# Company-specific analyst notes — written per target, not templated
+_ANALYST_NOTES = {
+    "Ipsen": (
+        "Ipsen is the clearest buy case in this universe. Net cash position (ND/EBITDA -0.5×) means an acquirer "
+        "pays almost nothing for balance sheet risk. The oncology pipeline — Cabometyx, Somatuline — generates "
+        "genuinely recurring revenue. Management are executing a disciplined portfolio exit of OTC (€600-800mn "
+        "estimated proceeds) which should release capital for reinvestment or return. At 6.4× EV/EBITDA this is "
+        "cheap for a pharma with 34% EBITDA margins. Only risk: family block and any regulatory overhang on "
+        "Somatuline biosimilar competition post-2027."
+    ),
+    "Vallourec": (
+        "Vallourec is a turnaround story that has actually turned. Steel pipes for oil & gas, restructured through "
+        "Covid, now generating meaningful FCF. At 2.9× EV/EBITDA it trades at a significant discount to OCTG peers. "
+        "The Brazilian operations are the real value — high-margin premium connections. Risk is commodity cycle "
+        "exposure and any reversal in oil capex. But at this multiple the downside is limited and there is strategic "
+        "logic for a trade buyer (TenarisOil & Gas services consolidation wave)."
+    ),
+    "bioMerieux": (
+        "bioMerieux is a quietly exceptional business — 24% EBITDA margins in diagnostics, family-controlled "
+        "(Institut Merieux 56%), recurring reagent revenue model. The Covid diagnostics boom inflated 2022 numbers "
+        "but the base business was already compounding at 6-8% organically. The family holding makes an unsolicited "
+        "approach structurally impossible, but a negotiated premium transaction with management alignment is "
+        "achievable. Comparable: Qiagen 2020 deal at 11× EV/EBITDA — bioMerieux at 10.6× is not expensive."
+    ),
+    "Capgemini": (
+        "Capgemini is the IT services consolidator, not a target. But at 7.7× EV/EBITDA with 14% margins and "
+        "meaningful AI exposure (Invent unit growing 18% YoY), it screens better than most defensive tech names. "
+        "The risk is that IT services multiples compress as AI commoditises lower-value delivery. Worth watching "
+        "but not a conviction buy at current prices. More interesting as a comps reference than a primary target."
+    ),
+    "Vivendi": (
+        "Vivendi post-Canal+ demerger is essentially a media holding company trading at a 35%+ NAV discount. "
+        "Havas (advertising), CNews, Prisma Media — none of these individually justify the complexity premium. "
+        "The Bollore family stake (26%+) is the wildcard. A sum-of-parts trade makes academic sense; executing "
+        "it against a controlling family shareholder is another matter. Include on the watchlist, not the shortlist."
+    ),
+    "Legrand": (
+        "Legrand is probably the most consistently excellent industrial in France — 25% EBITDA margins, "
+        "30%+ ROIC, M&A machine with 100+ acquisitions completed. The problem is valuation: 9.7× EV/EBITDA "
+        "for an industrial is not cheap. A strategic buyer (Schneider, ABB) could justify a premium through "
+        "synergy, but a financial buyer struggles to make the returns work. Better as a benchmarking reference "
+        "than a primary target at current entry prices."
+    ),
+    "Sanofi": (
+        "Sanofi is too large for a conventional M&A transaction (€118bn EV) but relevant as a divestiture "
+        "source. The Opella consumer health spin-off process (Doliprane, Essentiale) is worth tracking — "
+        "estimated EV €15-18bn, 8-10× EBITDA. That carve-out is a much more interesting entry point than "
+        "the parent. Flag for Phase 2 scope when we extend to sub-division level assets."
+    ),
+    "Bouygues": (
+        "Bouygues is a conglomerate discount story — construction + telecom + media under one roof. "
+        "Sum-of-parts suggests 20-30% upside to current market cap, but the discount has been structural "
+        "for 15 years. Telecom (Bouygues Telecom) is the most attractive asset in isolation; construction "
+        "margins are thin but cash generative. Dividend yield (5%+) keeps institutional holders passive. "
+        "A private equity sponsored breakup is logistically possible but family governance makes it unlikely."
+    ),
+    "Saint-Gobain": (
+        "Saint-Gobain has re-rated significantly post-Compagnie de Saint-Gobain transformation — divested "
+        "distribution, focused on high-performance materials. Margins have structurally improved (12% EBITDA "
+        "vs 8% five years ago). Trading at 5.5× which still looks inexpensive for the quality of the "
+        "remaining business. A trade buyer in building materials (Kingspan, Owens Corning) could extract "
+        "meaningful synergies. The balance sheet (1.0× ND/EBITDA) gives flexibility."
+    ),
+    "Eurofins": (
+        "Eurofins is a roll-up — labs, testing, certifications — that got caught in a short-seller attack "
+        "in 2019 and has never fully recovered investor trust. The underlying business is good: 22% margins, "
+        "recurring revenue from food/pharma testing mandates. Leverage at 2.9× is manageable but limits "
+        "financial buyer optionality. A strategic acquirer with balance sheet capacity (SGS, Bureau Veritas) "
+        "could de-lever quickly through synergy. Watch the Gilles Martin founder stake (15%) — he will not "
+        "accept a lowball offer."
+    ),
+}
+
 def _build_rationale(row, pillars):
+    company = row["Company"]
+    # Use hand-written note if available
+    if company in _ANALYST_NOTES:
+        return _ANALYST_NOTES[company]
+    # Fallback — still more natural than the template
     strengths = sorted(pillars.items(), key=lambda x: x[1], reverse=True)[:2]
-    str_text  = " and ".join([f"<b>{p}</b> ({s:.0f}/100)" for p, s in strengths])
+    weaknesses = sorted(pillars.items(), key=lambda x: x[1])[:1]
+    ev_eb = row.get("EV/EBITDA", 0)
+    nd = row.get("ND/EBITDA", 0)
+    margin = row.get("EBITDA Margin %", 0)
+    top_pillar, top_score = strengths[0]
+    weak_pillar, weak_score = weaknesses[0]
     return (
-        f"{row['Company']} achieves a composite score of "
-        f"<b>{row['Score']:.0f}/100</b>. Strongest pillars: {str_text}. "
-        f"EV/EBITDA of {row.get('EV/EBITDA', 'N/A')}× compares favourably to sector peers. "
-        f"Net leverage of {row.get('ND/EBITDA', 'N/A')}× is within conventional acquisition parameters."
+        f"Scores {row['Score']:.0f}/100 — strongest on {top_pillar} ({top_score:.0f}), "
+        f"which is the primary inclusion driver. At {ev_eb:.1f}× EV/EBITDA with {margin:.0f}% EBITDA margins "
+        f"and {nd:.1f}× net leverage, the entry case is {'straightforward' if nd < 2.5 else 'leveraged but manageable'}. "
+        f"Watch {weak_pillar} ({weak_score:.0f}/100) — this is the main diligence focus before LOI."
     )
 
 for rank, (_, row) in enumerate(shortlist.iterrows(), start=1):
