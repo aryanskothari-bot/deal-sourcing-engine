@@ -104,3 +104,29 @@ COLORS = {
 }
 
 EXPORT_FILENAME = "deal_sourcing_shortlist.xlsx"
+
+# ─── SECTOR LIST ─────────────────────────────────────────────────────────────
+SECTORS = [
+    "All Sectors",
+    "Luxury & Consumer",
+    "Healthcare & Pharma",
+    "Technology & Media",
+    "Industrials & Engineering",
+    "Retail & Distribution",
+    "Energy & Utilities",
+    "Financial Services",
+    "Real Estate",
+]
+
+# ─── SCREENER DEFAULT RANGES ─────────────────────────────────────────────────
+SCREENER_DEFAULTS = {
+    "mktcap_range":      (0, 350),
+    "ev_range":          (0, 400),
+    "revenue_min":       0,
+    "ebitda_margin_min": -50,
+    "nd_ebitda_max":     12,
+    "ev_ebitda_max":     35,
+    "rev_growth_min":    -30,
+}
+
+# ─── SBF120_TICKERS (alias kept for yfinance_loader) ─────────────────────────
