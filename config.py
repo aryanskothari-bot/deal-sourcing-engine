@@ -120,13 +120,14 @@ SECTORS = [
 
 # ─── SCREENER DEFAULT RANGES ─────────────────────────────────────────────────
 SCREENER_DEFAULTS = {
-    "mktcap_range":      (0, 350),
-    "ev_range":          (0, 400),
-    "revenue_min":       0,
-    "ebitda_margin_min": -50,
-    "nd_ebitda_max":     12,
-    "ev_ebitda_max":     35,
-    "rev_growth_min":    -30,
+    "mktcap_min_bn":       0.0,
+    "mktcap_max_bn":       100.0,
+    "ev_min_bn":           0.0,
+    "ev_max_bn":           150.0,
+    "revenue_min_mn":      0,
+    "ebitda_margin_min":   -20.0,
+    "net_debt_ebitda_max": 10.0,
+    "ev_ebitda_max":       30.0,
 }
 
 # ─── SBF120_TICKERS (alias kept for yfinance_loader) ─────────────────────────
