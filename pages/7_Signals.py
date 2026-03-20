@@ -24,7 +24,7 @@ with _c7: st.page_link("pages/7_Signals.py",     label="📡 Signals",     use_c
 st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>", unsafe_allow_html=True)
 
 page_header("Deal <em>Signal Monitor</em>",
-            "Live M&A watch · Takeover filings · Stake disclosures · Strategic reviews")
+            "What's moving in the SBF 120 right now — deals, stakes, restructurings")
 
 SIGNALS = [
     {"date":"Mar 18, 2026","company":"Kering","ticker":"KER.PA","type":"Strategic Review","severity":"high",
