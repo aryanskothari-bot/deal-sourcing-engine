@@ -17,7 +17,7 @@ st.set_page_config(page_title="Entry Valuation & IRR", page_icon="📈", layout=
 inject_css()
 
 _c1,_c2,_c3,_c4,_c5,_c6,_c7 = st.columns(7)
-with _c1: st.page_link("pages/1_Home.py",        label="🏠 Home",       use_container_width=True)
+with _c1: st.page_link("pages/0_About.py",       label="📝 About",      use_container_width=True)
 with _c2: st.page_link("pages/2_Screener.py",    label="🔍 Screener",   use_container_width=True)
 with _c3: st.page_link("pages/3_Ranker.py",      label="🎯 Ranker",     use_container_width=True)
 with _c4: st.page_link("pages/4_Financials.py",  label="📊 Financials", use_container_width=True)
