@@ -26,7 +26,19 @@ st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>"
 
 # ─── HEADER ───────────────────────────────────────────────────────────────────
 page_header("Deal Sourcing &amp; Preliminary <em>Diligence Engine</em>",
-            "European M&amp;A · Phase 1 — Euronext Paris / SBF 120")
+            "SBF 120 · Phase 1 · Built by Aryan Kothari")
+
+st.markdown("""
+<div style="max-width:720px;margin-bottom:24px">
+    <p style="font-family:var(--sans);font-size:14px;color:var(--muted);line-height:1.8;margin:0">
+        I built this during my MSc at SKEMA to replicate the Phase 1 origination workflow I saw at Nuvama —
+        screening a universe, scoring targets against acquisition criteria, and producing a preliminary diligence view
+        before a mandate is even awarded. The scoring model is transparent: eight weighted pillars,
+        no black-box outputs. Everything here runs on public SBF 120 data.
+        <span style="color:var(--faint)"> · Data: Bloomberg/yfinance, company filings · March 2026</span>
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
 # ─── LOAD DATA ────────────────────────────────────────────────────────────────
 with st.spinner("Loading universe…"):
@@ -87,7 +99,7 @@ st.dataframe(top5, use_container_width=True, height=220)
 
 # ─── NAVIGATE ─────────────────────────────────────────────────────────────────
 st.markdown("---")
-sec_label("Navigate the Engine")
+sec_label("What each module does")
 n1,n2,n3,n4,n5 = st.columns(5)
 nav_items = [
     (n1, "pages/2_Screener.py",   "🔍", "Universe Screener",    "Filter SBF 120 by sector, size, multiples, margins."),
