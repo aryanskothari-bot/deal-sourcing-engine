@@ -28,7 +28,7 @@ with _c7: st.page_link("pages/7_Signals.py",     label="📡 Signals",    use_co
 st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>", unsafe_allow_html=True)
 
 page_header("Comparable Companies <em>Benchmarking</em>",
-            "Sector peer analysis · Quartile positioning · Multiple benchmarks · Gap analysis")
+            "How does this company look against its peer group?")
 
 # ── LOAD DATA ─────────────────────────────────────────────────────────────────
 with st.spinner("Loading universe..."):
@@ -41,7 +41,7 @@ df = score_universe(raw)
 # ── SELECTORS ─────────────────────────────────────────────────────────────────
 sel_col, sec_col = st.columns([1, 1])
 with sel_col:
-    selected = st.selectbox("Select Target Company", df["Company"].tolist(), index=0)
+    selected = st.selectbox("Company", df["Company"].tolist(), index=0)
 with sec_col:
     all_sectors = ["All Sectors"] + sorted(df["Sector"].dropna().unique().tolist())
     target_sector = df[df["Company"]==selected]["Sector"].values[0]
