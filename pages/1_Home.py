@@ -29,13 +29,17 @@ page_header("Deal Sourcing &amp; Preliminary <em>Diligence Engine</em>",
             "SBF 120 · Phase 1 · Built by Aryan Kothari")
 
 st.markdown("""
-<div style="max-width:720px;margin-bottom:24px">
-    <p style="font-family:var(--sans);font-size:14px;color:var(--muted);line-height:1.8;margin:0">
-        I built this during my MSc at SKEMA to replicate the Phase 1 origination workflow I saw at Nuvama —
-        screening a universe, scoring targets against acquisition criteria, and producing a preliminary diligence view
-        before a mandate is even awarded. The scoring model is transparent: eight weighted pillars,
-        no black-box outputs. Everything here runs on public SBF 120 data.
-        <span style="color:var(--faint)"> · Data: Bloomberg/yfinance, company filings · March 2026</span>
+<div style="max-width:760px;margin-bottom:24px;border-left:2px solid var(--gold);padding-left:18px">
+    <p style="font-family:var(--sans);font-size:13.5px;color:var(--ink2);line-height:1.85;margin:0 0 10px">
+        Phase 1 origination at a deal team level — before a mandate is awarded — means taking a defined universe,
+        applying consistent acquisition criteria, and producing a shortlist you can defend in a meeting with an MD.
+        This tool replicates that workflow across 29 SBF 120 companies.
+    </p>
+    <p style="font-family:var(--sans);font-size:13px;color:var(--muted);line-height:1.8;margin:0">
+        Every score traces back to a specific metric with an explicit weight. No black box.
+        If you disagree with how I've weighted Valuation vs Leverage for a PE mandate vs strategic buyer,
+        the methodology page explains the choices and I'd welcome the debate.
+        <span style="color:var(--faint)"> · SBF 120 · Bloomberg/yfinance · March 2026</span>
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -99,6 +103,18 @@ st.dataframe(top5, use_container_width=True, height=220)
 
 # ─── NAVIGATE ─────────────────────────────────────────────────────────────────
 st.markdown("---")
+st.markdown("""
+<div style="background:rgba(155,111,41,.06);border:1px solid rgba(155,111,41,.2);padding:14px 18px;margin-bottom:20px;max-width:760px">
+    <span style="font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)">
+    How to use this in a conversation with a recruiter &mdash; </span>
+    <span style="font-family:var(--sans);font-size:12.5px;color:var(--muted)">
+    Start at Screener (filter the universe), move to Ranker (see composite scores), open Shortlist
+    (read the investment thesis per target), then Diligence (QoE + red flags). That's exactly
+    the Phase 1 workflow before an LOI is signed.
+    </span>
+</div>
+""", unsafe_allow_html=True)
+
 sec_label("What each module does")
 n1,n2,n3,n4,n5 = st.columns(5)
 nav_items = [
