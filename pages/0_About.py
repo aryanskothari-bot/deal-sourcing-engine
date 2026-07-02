@@ -9,7 +9,7 @@ from ui.styles import inject_css, page_header
 st.set_page_config(page_title="About", page_icon="📝", layout="wide")
 inject_css()
 
-_c1,_c2,_c3,_c4,_c5,_c6,_c7 = st.columns(7)
+_c1,_c2,_c3,_c4,_c5,_c6,_c7,_c8 = st.columns(8)
 with _c1: st.page_link("pages/0_About.py",        label="📝 About",      use_container_width=True)
 with _c2: st.page_link("pages/2_Screener.py",      label="🔍 Screener",   use_container_width=True)
 with _c3: st.page_link("pages/3_Ranker.py",        label="🎯 Ranker",     use_container_width=True)
@@ -17,6 +17,7 @@ with _c4: st.page_link("pages/4_Financials.py",    label="📊 Financials", use_
 with _c5: st.page_link("pages/8_Valuation.py",     label="📈 Valuation",  use_container_width=True)
 with _c6: st.page_link("pages/9_Benchmarking.py",  label="📐 Comps",      use_container_width=True)
 with _c7: st.page_link("pages/7_Signals.py",       label="📡 Signals",    use_container_width=True)
+with _c8: st.page_link("pages/10_Deal_Memo.py",    label="📋 Deal Memo",  use_container_width=True)
 st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>", unsafe_allow_html=True)
 
 page_header("About this <em>project</em>", "Why I built it, how the model works, what it is and is not")
