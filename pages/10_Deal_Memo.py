@@ -36,7 +36,24 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Company selector
-from data_sources.static_loader import STATIC_COMPANIES as UNIVERSE
+from data_sources.static_loader import STATIC_COMPANIES
+
+# Map static_loader columns to expected names
+def _build_universe():
+    rows = []
+    for c in STATIC_COMPANIES:
+        rows.append({
+            "Company":         c.get("name", ""),
+            "Ticker":          c.get("ticker", ""),
+            "Sector":          c.get("sector", ""),
+            "Score":           c.get("acq_score", 0),
+            "Mkt Cap (€bn)":   c.get("mktcap_bn", 0),
+            "EV/EBITDA":       c.get("ev_ebitda", 0),
+            "EBITDA Margin %": c.get("ebitda_margin_pct", 0),
+            "ND/EBITDA":       c.get("net_debt_ebitda", 0),
+        })
+    return rows
+UNIVERSE = _build_universe()
 import pandas as pd
 
 df = pd.DataFrame(UNIVERSE)
