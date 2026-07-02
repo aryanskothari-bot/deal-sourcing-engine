@@ -36,7 +36,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Company selector
-from data.universe import UNIVERSE
+from data_sources.static_loader import UNIVERSE
 import pandas as pd
 
 df = pd.DataFrame(UNIVERSE)
