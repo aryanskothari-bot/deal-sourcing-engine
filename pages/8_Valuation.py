@@ -81,6 +81,58 @@ with col3:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── MODEL INPUTS ──────────────────────────────────────────────────────────────
+
+# ── SOURCES & USES ────────────────────────────────────────────────────────────
+sec_label("Sources & Uses")
+
+_su_entry_ev   = row.get("EV (€bn)", 0) * 1000
+_su_equity_pct = 1 - debt_pct
+_su_equity     = _su_entry_ev * _su_equity_pct
+_su_debt       = _su_entry_ev * debt_pct
+_su_fees       = _su_entry_ev * 0.02
+_su_total      = _su_entry_ev + _su_fees
+
+_su_col1, _su_col2 = st.columns(2)
+with _su_col1:
+    st.markdown("""
+<div style="background:var(--paper2);border:1px solid rgba(16,14,12,.08);
+            border-top:2px solid var(--gold);padding:16px 20px">
+    <div style="font-family:var(--mono);font-size:8px;letter-spacing:.18em;
+                text-transform:uppercase;color:var(--faint);margin-bottom:12px">USES</div>
+""", unsafe_allow_html=True)
+    for _k, _v in [("Purchase Price (EV)", f"\u20ac{_su_entry_ev:,.0f}k"),
+                   ("Advisory Fees (2%)", f"\u20ac{_su_fees:,.0f}k"),
+                   ("Total Uses", f"\u20ac{_su_total:,.0f}k")]:
+        _bdr = "border-top:1px solid rgba(16,14,12,.1);padding-top:8px;margin-top:8px;" if "Total" in _k else ""
+        _bld = "font-weight:600;" if "Total" in _k else ""
+        st.markdown(f'''<div style="display:flex;justify-content:space-between;padding:4px 0;{_bdr}">
+            <span style="font-family:var(--sans);font-size:12px;color:var(--ink2)">{_k}</span>
+            <span style="font-family:var(--mono);font-size:12px;color:var(--ink);{_bld}">{_v}</span>
+        </div>''', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with _su_col2:
+    st.markdown("""
+<div style="background:var(--paper2);border:1px solid rgba(16,14,12,.08);
+            border-top:2px solid #1B4B2B;padding:16px 20px">
+    <div style="font-family:var(--mono);font-size:8px;letter-spacing:.18em;
+                text-transform:uppercase;color:var(--faint);margin-bottom:12px">SOURCES</div>
+""", unsafe_allow_html=True)
+    _src_color = {"Equity": "#1B4B2B", "Senior Debt": "var(--ink)", "Total Sources": "var(--ink)"}
+    for _k, _v in [(f"Equity ({_su_equity_pct:.0%})", f"\u20ac{_su_equity:,.0f}k"),
+                   (f"Senior Debt ({debt_pct:.0%})", f"\u20ac{_su_debt:,.0f}k"),
+                   ("Total Sources", f"\u20ac{_su_total:,.0f}k")]:
+        _bdr = "border-top:1px solid rgba(16,14,12,.1);padding-top:8px;margin-top:8px;" if "Total" in _k else ""
+        _bld = "font-weight:600;" if "Total" in _k else ""
+        _col = "#1B4B2B" if "Equity" in _k else "var(--ink)"
+        st.markdown(f'''<div style="display:flex;justify-content:space-between;padding:4px 0;{_bdr}">
+            <span style="font-family:var(--sans);font-size:12px;color:var(--ink2)">{_k}</span>
+            <span style="font-family:var(--mono);font-size:12px;color:{_col};{_bld}">{_v}</span>
+        </div>''', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
+
 sec_label("Deal structure")
 
 inp1, inp2, inp3 = st.columns(3)
