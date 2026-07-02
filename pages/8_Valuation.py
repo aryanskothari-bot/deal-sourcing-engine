@@ -86,7 +86,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 sec_label("Sources & Uses")
 
 # Use default debt_pct if not yet defined (sliders come later)
-_debt_pct_su   = debt_pct if "debt_pct" in dir() else 0.6
+_debt_pct_su   = 0.6  # default; actual value set after sliders below
 _su_entry_ev   = row.get("EV (€bn)", 0) * 1000
 _su_equity_pct = 1 - _debt_pct_su
 _su_equity     = _su_entry_ev * _su_equity_pct
@@ -122,7 +122,7 @@ with _su_col2:
 """, unsafe_allow_html=True)
     _src_color = {"Equity": "#1B4B2B", "Senior Debt": "var(--ink)", "Total Sources": "var(--ink)"}
     for _k, _v in [(f"Equity ({_su_equity_pct:.0%})", f"\u20ac{_su_equity:,.0f}k"),
-                   (f"Senior Debt ({debt_pct:.0%})", f"\u20ac{_su_debt:,.0f}k"),
+                   (f"Senior Debt ({_debt_pct_su:.0%})", f"\u20ac{_su_debt:,.0f}k"),
                    ("Total Sources", f"\u20ac{_su_total:,.0f}k")]:
         _bdr = "border-top:1px solid rgba(16,14,12,.1);padding-top:8px;margin-top:8px;" if "Total" in _k else ""
         _bld = "font-weight:600;" if "Total" in _k else ""
