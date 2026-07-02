@@ -29,7 +29,21 @@ with _c6: st.page_link("pages/9_Benchmarking.py",label="📐 Comps",      use_co
 with _c7: st.page_link("pages/7_Signals.py",     label="📡 Signals",    use_container_width=True)
 st.markdown("<hr style='margin:4px 0 16px 0;border-color:rgba(155,111,41,.25)'>", unsafe_allow_html=True)
 
-page_header("Deal <em>Shortlist</em>", "My current target list — with analyst notes on why each one is in or out")
+page_header("Deal <em>Shortlist</em>", "Shortlist with investment thesis — what you'd pitch to an MD before LOI")
+
+with st.expander("How to walk through this in an interview", expanded=False):
+    st.markdown("""
+**The question you'll get:** *"Walk me through how you'd source a deal in the French mid-market."*
+
+**What this page answers:**
+1. I start with a defined universe (SBF 120, 29 companies) and apply quantitative screens — size, leverage, sector, growth.
+2. The scoring model weights eight acquisition criteria. Every company gets a 0-100 score, fully traceable to public data.
+3. For the top-scoring targets, I write a one-paragraph investment thesis — what makes this a buy, what the risk is, what comparable deal I'd reference.
+4. That thesis is what an associate would put in the first page of a teaser or an IC memo.
+
+The companies below are the ones that passed all three gates: quantitative screen, acquisition score, and analyst conviction.
+    """)
+
 
 # ── LOAD & SCORE ──────────────────────────────────────────────────────────────
 with st.spinner("Loading shortlist..."):
