@@ -85,10 +85,12 @@ st.markdown("<br>", unsafe_allow_html=True)
 # ── SOURCES & USES ────────────────────────────────────────────────────────────
 sec_label("Sources & Uses")
 
+# Use default debt_pct if not yet defined (sliders come later)
+_debt_pct_su   = debt_pct if "debt_pct" in dir() else 0.6
 _su_entry_ev   = row.get("EV (€bn)", 0) * 1000
-_su_equity_pct = 1 - debt_pct
+_su_equity_pct = 1 - _debt_pct_su
 _su_equity     = _su_entry_ev * _su_equity_pct
-_su_debt       = _su_entry_ev * debt_pct
+_su_debt       = _su_entry_ev * _debt_pct_su
 _su_fees       = _su_entry_ev * 0.02
 _su_total      = _su_entry_ev + _su_fees
 
